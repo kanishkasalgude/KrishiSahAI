@@ -33,3 +33,4 @@ firebase.ts
 Backend/services/Disease Detector/plant_disease_model.h5
 Backend/services/Pest Detector/krishiai_yolo_final.pt
 
+.env

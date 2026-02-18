@@ -16,6 +16,12 @@ export const translations = {
         navAskAI: "Ask AI",
         navNews: "News",
         navKnowledge: "Knowledge",
+        navFeatures: "Features",
+        navAbout: "About",
+        navContact: "Contact",
+        navCropCare: "Crop Care",
+        navWaste: "Waste2Value",
+        navHub: "Knowledge Hub",
 
         // Auth
         login: "Login",
@@ -32,6 +38,21 @@ export const translations = {
         alreadyHaveAccount: "Already have an account?",
         loggingIn: "Logging in...",
         loading: "Loading...",
+        rememberMe: "Remember Me",
+        tagline: "The unfair advantage every farmer deserves.",
+
+        // Auth Redesign Sections
+        sectionPersonal: "Personal Details",
+        sectionLand: "Land Details",
+        sectionLocation: "Location Details",
+        confirmPassword: "Confirm Password",
+        landArea: "Total Land Area",
+        unitAcre: "Acre",
+        unitHectare: "Hectare",
+        landType: "Type of Land",
+        irrigated: "Irrigated",
+        rainfed: "Rainfed",
+        mixed: "Mixed",
 
         // Profile & Forms
         editProfile: "Edit Profile",
@@ -150,6 +171,10 @@ export const translations = {
         footerBtn: "Start with AI Assistant",
         footerCopyright: "© 2025 KrishiSahAI TechFiesta. Empowering Farmers with Technology.",
 
+        // Validation Section
+        validationBadge: "Validation",
+        validationTitle: "Validation Phase: Zero Mile",
+
         // Business Advisory & Chatbot
         knowledgeAssistant: "Knowledge Assistant",
         aiDisclaimer: "AI can make mistakes. Verify important info.",
@@ -248,6 +273,12 @@ export const translations = {
         navAskAI: "AI से पूछें",
         navNews: "समाचार",
         navKnowledge: "ज्ञान",
+        navFeatures: "विशेषताएं",
+        navAbout: "हमारे बारे में",
+        navContact: "संपर्क",
+        navCropCare: "फसल सुरक्षा",
+        navWaste: "अपशिष्ट से मूल्य",
+        navHub: "ज्ञान केंद्र",
 
         // Auth
         login: "लॉगिन",
@@ -264,6 +295,21 @@ export const translations = {
         alreadyHaveAccount: "क्या आपके पास पहले से खाता है?",
         loggingIn: "लॉगिन हो रहा है...",
         loading: "लोड हो रहा है...",
+        rememberMe: "मुझे याद रखें",
+        tagline: "वह अनुचित लाभ जिसका हर किसान हकदार है।",
+
+        // Auth Redesign Sections
+        sectionPersonal: "व्यक्तिगत विवरण",
+        sectionLand: "भूमि विवरण",
+        sectionLocation: "स्थान विवरण",
+        confirmPassword: "पासवर्ड की पुष्टि करें",
+        landArea: "कुल भूमि क्षेत्र",
+        unitAcre: "एकड़",
+        unitHectare: "हेक्टेयर",
+        landType: "भूमि का प्रकार",
+        irrigated: "सिंचित",
+        rainfed: "वर्षा आधारित",
+        mixed: "मिश्रित",
 
         // Profile & Forms
         editProfile: "प्रोफाइल संपादित करें",
@@ -382,6 +428,10 @@ export const translations = {
         footerBtn: "AI सहायक के साथ शुरू करें",
         footerCopyright: "© 2025 कृषिसहाय टेकफिएस्टा। प्रौद्योगिकी के साथ किसानों को सशक्त बनाना।",
 
+        // Validation Section
+        validationBadge: "सत्यापन",
+        validationTitle: "सत्यापन चरण: जीरो माइल",
+
         // Business Advisory & Chatbot
         knowledgeAssistant: "ज्ञान सहायक",
         aiDisclaimer: "AI गलतियाँ कर सकता है। महत्वपूर्ण जानकारी की पुष्टि करें।",
@@ -480,6 +530,12 @@ export const translations = {
         navAskAI: "AI ला विचारा",
         navNews: "बातम्या",
         navKnowledge: "ज्ञान",
+        navFeatures: "वैशिष्ट्ये",
+        navAbout: "आमच्याबद्दल",
+        navContact: "संपर्क",
+        navCropCare: "पीक संरक्षण",
+        navWaste: "टाकाऊ पासून टिकाऊ",
+        navHub: "ज्ञान केंद्र",
 
         // Auth
         login: "लॉगिन",
@@ -496,6 +552,21 @@ export const translations = {
         alreadyHaveAccount: "आधीच खाते आहे का?",
         loggingIn: "लॉगिन होत आहे...",
         loading: "लोड होत आहे...",
+        rememberMe: "माझी आठवण ठेवा",
+        tagline: "तो अयोग्य फायदा ज्याचा प्रत्येक शेतकरी हक्कदार आहे.",
+
+        // Auth Redesign Sections
+        sectionPersonal: "वैयक्तिक तपशील",
+        sectionLand: "जमिनीचा तपशील",
+        sectionLocation: "स्थान तपशील",
+        confirmPassword: "पासवर्डची पुष्टी करा",
+        landArea: "एकूण जमिनीचे क्षेत्रफळ",
+        unitAcre: "एकर",
+        unitHectare: "हेक्टर",
+        landType: "जमिनीचा प्रकार",
+        irrigated: "ओलिताखालील",
+        rainfed: "कोरडवाहू",
+        mixed: "मिश्रित",
 
         // Profile & Forms
         editProfile: "प्रोफाइल संपादित करा",
@@ -613,6 +684,10 @@ export const translations = {
         footerDesc: "उत्पादकता, शाश्वतता आणि नफा वाढवण्यासाठी AI-आधारित साधने वापरणाऱ्या हजारो शेतकऱ्यांमध्ये सामील व्हा.",
         footerBtn: "AI सहाय्यकासह प्रारंभ करा",
         footerCopyright: "© 2025 कृषीसहाय टेकफिएस्टा. तंत्रज्ञानाद्वारे शेतकऱ्यांना सक्षम करणे.",
+
+        // Validation Section
+        validationBadge: "सत्यापन",
+        validationTitle: "सत्यापन चरण: झिरो माईल",
 
         // Business Advisory & Chatbot
         knowledgeAssistant: "ज्ञान सहाय्यक",

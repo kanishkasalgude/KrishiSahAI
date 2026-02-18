@@ -12,6 +12,8 @@ export interface UserProfile {
   district: string;
   village: string;
   landSize: string;
+  landUnit: 'acre' | 'hectare';
+  landType: 'Irrigated' | 'Rainfed' | 'Mixed';
   soilType: string;
   waterAvailability: string;
   mainCrops: string[];
