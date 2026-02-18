@@ -1,7 +1,12 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
+<<<<<<< HEAD
 import { api } from '../services/api';
 import { ArrowLeft, Download, CheckCircle, AlertTriangle, TrendingUp, Users, Calendar, Shield, Loader2, Share2 } from 'lucide-react';
+=======
+import { api } from '../src/services/api';
+import { ArrowLeft, Download, CheckCircle, AlertTriangle, TrendingUp, Users, Calendar, Shield, Loader2 } from 'lucide-react';
+>>>>>>> 4290ab36ead05baf34b51964aa899bc1042c0f33
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import { Language } from '../types';

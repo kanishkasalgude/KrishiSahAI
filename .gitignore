@@ -97,3 +97,4 @@ Backend/services/VoiceText/*.bin
 # Ignore logs
 *.log
 backend_log.txt
+Backend/krishiai-58578-firebase-adminsdk-fbsvc-39a94d76cd.json

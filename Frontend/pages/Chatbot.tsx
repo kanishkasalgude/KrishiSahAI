@@ -21,6 +21,12 @@ import { api } from '../services/api';
 import { auth } from '../firebase';
 import { getUserProfile } from '../services/firebase_db';
 import { chatService, ChatSession, Message } from '../services/chatService';
+=======
+import { translations } from '../translations';
+import { api } from '../src/services/api';
+import { auth } from '../src/firebase';
+import { getUserProfile } from '../src/services/firebase_db';
+import { chatService, ChatSession, Message } from '../src/services/chatService';
 import { ChatLayout } from '../components/ChatLayout';
 import { ChatSidebar } from '../components/ChatSidebar';
 import { DeleteConfirmationModal } from '../components/DeleteConfirmationModal';
