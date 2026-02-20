@@ -17,102 +17,27 @@ def init_model():
     
     if _model is not None:
         return _model
+    
     try:
-        # Get the exact folder where this pest_detector.py script currently lives
-        current_folder = Path(__file__).parent.resolve()
-
-        # 1. Point to the weights file sitting right next to this script
-        model_path = current_folder / 'krishisahai_yolo_final.pt'
+        model_path = Path(__file__).parent / 'krishisahai_yolo_final.pt'
         
-        # 2. Point to the custom YOLO code folder we just pasted
-        local_yolo_repo = current_folder / 'yolov5_custom'
+        if not model_path.exists():
+            raise FileNotFoundError(f"Model file not found: {model_path}")
         
-        if not local_yolo_repo.exists():
-            raise FileNotFoundError(f"Missing custom YOLO architecture folder at: {local_yolo_repo}")
-
-        # Add to sys.path dynamically so Python finds the custom math
-        import sys
-        if str(local_yolo_repo) not in sys.path:
-            sys.path.insert(0, str(local_yolo_repo))
-
-        # Load the model
-
-
-        # --- ENVIRONMENT PATCHES START ---
-        # These are necessary to make the local repo work in this Python environment
+        print(f"Loading YOLO pest detection model from {model_path}")
         
-        # 1. Mock IPython (used by models/common.py but not needed for inference)
-        try:
-            import IPython
-        except ImportError:
-            from unittest.mock import MagicMock
-            mock_ipython = MagicMock()
-            mock_ipython.version_info = (8, 0, 0, '') # Tuple required for comparison
-            sys.modules["IPython"] = mock_ipython
-            sys.modules["IPython.display"] = MagicMock()
-            # print("Mocked IPython for compatibility")
-
-        # 2. Mock pkg_resources (used by utils/general.py for version checking)
-        try:
-            import pkg_resources
-        except ImportError:
-            class MockPkgResources:
-                def parse_version(self, v):
-                    return v # Return string for simple comparison
-                def get_distribution(self, n):
-                    return MagicMock() 
-            sys.modules["pkg_resources"] = MockPkgResources()
-            # print("Mocked pkg_resources for compatibility")
-
-        # --- ENVIRONMENT PATCHES END ---
-
-        # Insert local repo path at the front of sys.path so Python finds the custom models.common.py
-        if local_yolo_repo not in sys.path:
-            sys.path.insert(0, local_yolo_repo)
-            
-        print(f"Loading custom model from: {model_path}")
-        print(f"Using repo source: {local_yolo_repo}")
-
-        # Patch torch.load to set weights_only=False (PyTorch 2.6+ security fix breaks legacy weights)
-        _original_load = torch.load
-        def _unsafe_load(*args, **kwargs):
-            if 'weights_only' not in kwargs:
-                kwargs['weights_only'] = False
-            return _original_load(*args, **kwargs)
-            
-        torch.load = _unsafe_load
+        # Use ultralytics YOLO for more robust loading
+        _model = YOLO(str(model_path))
         
-        try:
-            # Load custom YOLOv5 model using local source
-            # trust_repo=True is required for loading from github/hub
-            # force_reload=True ensures we use the code in local_yolo_repo, not cached standard repo
-            _model = torch.hub.load(local_yolo_repo, 'custom', path=model_path, source='local', force_reload=True, trust_repo=True)
-            print("Pest detection model loaded successfully")
-        except AttributeError as e:
-            if "Can't get attribute" in str(e):
-                print(f"\n[CRITICAL ERROR] Incompatible Model Weights: {e}")
-                _model = None
-            else:
-                raise e
-        except Exception as e:
-            print(f"Error during hub load: {e}")
-            import traceback
-            traceback.print_exc()
-            _model = None
-        finally:
-            torch.load = _original_load # Restore original load
+        # Load class names
+        if not _classes:
+            load_classes()
         
+        print("Pest detection model loaded successfully")
         return _model
         
     except Exception as e:
-        print(f"Error initializing pest detection model: {e}")
-        try:
-            with open("pest_error.log", "w", encoding="utf-8") as f:
-                f.write(f"Error: {e}\n")
-                import traceback
-                traceback.print_exc(file=f)
-        except:
-            pass
+        print(f"Error loading pest detection model: {e}")
         import traceback
         traceback.print_exc()
         return None
