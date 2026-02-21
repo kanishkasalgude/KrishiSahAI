@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Language } from '../types';
+import { UserProfile } from '../types';
 import { useLanguage } from '../src/context/LanguageContext';
 import { useFarm } from '../src/context/FarmContext';
 import { api } from '../src/services/api';
-import { auth } from '../firebase';
-import { UserProfile } from '../types';
+import { auth, db } from '../firebase';
+import { onSnapshot, doc } from 'firebase/firestore';
 import {
     Briefcase,
     ArrowRight,
@@ -202,8 +202,24 @@ const getKnowMoreData = (rec: Recommendation) => ({
     ]
 });
 
-const BusinessAdvisory: React.FC<{ lang: Language; user: UserProfile | null }> = ({ lang, user }) => {
-    const t = translations[lang] || translations['EN'];
+const BusinessAdvisory: React.FC = () => {
+    const { language: lang, t } = useLanguage();
+    const { activeFarm, farms } = useFarm();
+    const [user, setUser] = useState<UserProfile | null>(null);
+
+    useEffect(() => {
+        const unsubscribe = auth.onAuthStateChanged((u: any) => {
+            if (u) {
+                onSnapshot(doc(db, 'users', u.uid), (snap: any) => {
+                    if (snap.exists()) setUser(snap.data() as UserProfile);
+                });
+            } else {
+                setUser(null);
+            }
+        });
+        return () => unsubscribe();
+    }, []);
+
     const navigate = useNavigate();
     const location = useLocation();
     const [step, setStep] = useState<number>(0);
@@ -246,7 +262,7 @@ const BusinessAdvisory: React.FC<{ lang: Language; user: UserProfile | null }> =
     // Set total land from active farm or cumulative farms
     useEffect(() => {
         if (user) {
-            const size = user.landSize || (user as any).land_size;
+            const size = (user as any).landSize || (user as any).land_size;
             if (size) {
                 setFormData(prev => ({ ...prev, totalLand: size.toString() }));
             }

@@ -86,7 +86,8 @@ const Header: React.FC<{
   weatherData?: any;
   weatherLoading?: boolean;
   refreshWeather: () => void;
-}> = ({ toggleNotifications, toggleWeather, user, logout, weatherData, weatherLoading, refreshWeather }) => {
+  onAuthSwitch: (view: 'login' | 'signup') => void;
+}> = ({ toggleNotifications, toggleWeather, user, logout, weatherData, weatherLoading, refreshWeather, onAuthSwitch }) => {
   const location = useLocation();
   const { language, setLanguage, t } = useLanguage();
   const { activeFarm, setActiveFarm, farms } = useFarm();
@@ -235,12 +236,18 @@ const Header: React.FC<{
               </div>
             ) : (
               <div className="flex items-center gap-0">
-                <Link to="/login" className="px-6 py-2.5 text-sm font-bold text-white uppercase hover:bg-white/10 transition-colors rounded-lg">
+                <button
+                  onClick={() => onAuthSwitch('login')}
+                  className="px-6 py-2.5 text-sm font-bold text-white uppercase hover:bg-white/10 transition-colors rounded-lg"
+                >
                   {t.login}
-                </Link>
-                <Link to="/signup" className="px-6 py-2.5 bg-white text-[#1B5E20] text-sm font-bold uppercase hover:bg-gray-100 transition-all border-2 border-white rounded-lg">
+                </button>
+                <button
+                  onClick={() => onAuthSwitch('signup')}
+                  className="px-6 py-2.5 bg-white text-[#1B5E20] text-sm font-bold uppercase hover:bg-gray-100 transition-all border-2 border-white rounded-lg"
+                >
                   {t.signup}
-                </Link>
+                </button>
               </div>
             )}
           </div>
@@ -319,9 +326,9 @@ const LoginFlow: React.FC<{ onLogin: (phone: string, password: string) => void; 
   };
 
   return (
-    <div className="h-screen w-screen overflow-hidden flex flex-col md:flex-row">
+    <div className="h-screen w-screen flex flex-col md:flex-row">
       {/* Left Section - Login Form (Light Section) */}
-      <div className="w-full md:w-1/2 h-full overflow-y-auto bg-[#F1F8E9]">
+      <div className="w-full md:w-1/2 flex-1 min-h-0 overflow-y-auto bg-[#F1F8E9]">
         <div className="min-h-full flex items-center justify-center p-6 md:p-12">
           <div className="w-full max-w-[480px] bg-white rounded-2xl shadow-lg p-8 md:p-10 border border-green-100">
             <div className="mb-8 font-poppins">
@@ -343,7 +350,8 @@ const LoginFlow: React.FC<{ onLogin: (phone: string, password: string) => void; 
                     <span className="p-4 bg-gray-100 border-2 border-gray-200 text-gray-500 rounded-xl font-bold flex items-center">+91</span>
                     <input
                       required
-                      type="tel"
+                      type="text"
+                      inputMode="numeric"
                       placeholder="XXXXX XXXXX"
                       value={phone}
                       onChange={(e) => setPhone(e.target.value.replace(/\D/g, '').slice(0, 10))}
@@ -497,7 +505,7 @@ const SignupFlow: React.FC<{ onSignup: (p: UserProfile, password?: string) => vo
   const sectionTitleClasses = "text-xl font-black text-[#1B5E20] mb-6";
 
   return (
-    <div className="h-screen w-screen overflow-hidden flex flex-col md:flex-row">
+    <div className="h-screen w-screen flex flex-col md:flex-row">
       <div className="hidden md:flex w-full md:w-1/2 h-full bg-gradient-to-br from-[#1B5E20] to-[#004D40] flex-col items-center justify-center p-12 text-center relative overflow-hidden">
         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
         <div className="relative z-10 flex flex-col items-center justify-center">
@@ -507,7 +515,7 @@ const SignupFlow: React.FC<{ onSignup: (p: UserProfile, password?: string) => vo
         </div>
       </div>
 
-      <div className="w-full md:w-1/2 h-full overflow-y-auto bg-[#F1F8E9]">
+      <div className="w-full md:w-1/2 flex-1 min-h-0 overflow-y-auto bg-[#F1F8E9]">
         <div className="min-h-full flex items-center justify-center p-6 md:p-12">
           <div className="w-full max-w-[540px] bg-white rounded-2xl shadow-lg p-8 md:p-10 border border-green-100 my-8">
             <div className="mb-6">
@@ -553,7 +561,7 @@ const SignupFlow: React.FC<{ onSignup: (p: UserProfile, password?: string) => vo
                       </div>
                       <div>
                         <label className={labelClasses}>{t.signupFlow.phone} *</label>
-                        <input required placeholder={t.signupFlow.placeholders.phone} className={inputClasses} value={formData.phone} onChange={e => setFormData({ ...formData, phone: e.target.value.replace(/\D/g, '').slice(0, 10) })} />
+                        <input required placeholder={t.signupFlow.placeholders.phone} type="text" inputMode="numeric" className={inputClasses} value={formData.phone} onChange={e => setFormData({ ...formData, phone: e.target.value.replace(/\D/g, '').slice(0, 10) })} />
                       </div>
                       <div className="grid grid-cols-2 gap-4">
                         <div>
@@ -762,7 +770,7 @@ const AppContent: React.FC = () => {
       unsubscribe();
       if (profileUnsub) profileUnsub();
     };
-  }, [setLanguage, setFarms, setActiveFarm, language]);
+  }, []);
 
   const fetchWeather = async (location: string) => {
     if (!location) return;
@@ -849,6 +857,7 @@ const AppContent: React.FC = () => {
             weatherData={weatherData}
             weatherLoading={weatherLoading}
             refreshWeather={handleRefreshWeather}
+            onAuthSwitch={setAuthView}
           />
 
           <WeatherModal

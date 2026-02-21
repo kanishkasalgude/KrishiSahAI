@@ -79,13 +79,19 @@ body::before {
   font-family: 'Noto Sans Devanagari', 'Inter', sans-serif;
 }
 
-/* Smooth Transitions for Theme Changes */
-*,
-*::before,
-*::after {
+/* Smooth Transitions for Theme Changes - only for non-interactive elements */
+:not(input):not(textarea):not(select):not(button) {
   transition-property: background-color, border-color, color, fill, stroke;
   transition-duration: var(--transition-normal);
   transition-timing-function: ease-in-out;
+}
+
+/* Inputs and buttons respond instantly - no transition delay */
+input,
+textarea,
+select,
+button {
+  transition: none;
 }
 
 /* Disable transitions on page load */
