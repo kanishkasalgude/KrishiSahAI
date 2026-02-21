@@ -23,10 +23,9 @@ const EditProfile: React.FC = () => {
         gender: 'male',
         language: language,
         farms: [
-            { nickname: 'My Farm', landType: 'Irrigated', waterResource: 'Borewell', soilType: 'black', landSize: '', unit: 'Acre', crop: '', crops: [], state: '', district: '', village: '' }
+            { nickname: 'My Farm', landType: 'Irrigated', waterResource: 'Borewell', soilType: 'black', landSize: '', unit: 'Acre', crops: [], state: '', district: '', village: '' }
         ],
-        experience_years: '0',
-        pin: ''
+        experience_years: ''
     });
 
     useEffect(() => {
@@ -51,7 +50,6 @@ const EditProfile: React.FC = () => {
                             soilType: f.soilType || 'black',
                             landSize: f.landSize?.toString() || '',
                             unit: f.unit || 'Acre',
-                            crop: f.crop || '',
                             crops: f.crops || [],
                             state: f.state || (data as any).location?.state || '',
                             district: f.district || (data as any).location?.district || '',
@@ -70,6 +68,11 @@ const EditProfile: React.FC = () => {
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
+        if (name === 'experience_years') {
+            const val = value.replace(/\D/g, '');
+            setFormData(prev => ({ ...prev, experience_years: val }));
+            return;
+        }
         if (name.includes('.')) {
             const [parent, child] = name.split('.');
             setFormData(prev => ({
@@ -84,7 +87,7 @@ const EditProfile: React.FC = () => {
     const addFarm = () => {
         setFormData(prev => ({
             ...prev,
-            farms: [...prev.farms, { nickname: `Farm ${prev.farms.length + 1}`, landType: 'Irrigated', waterResource: 'Borewell', soilType: 'black', landSize: '', unit: 'Acre', crop: '', crops: [], state: '', district: '', village: '' }]
+            farms: [...prev.farms, { nickname: `Farm ${prev.farms.length + 1}`, landType: 'Irrigated', waterResource: 'Borewell', soilType: 'black', landSize: '', unit: 'Acre', crops: [], state: '', district: '', village: '' }]
         }));
     };
 
@@ -209,7 +212,7 @@ const EditProfile: React.FC = () => {
                                 </div>
                                 <div>
                                     <label className={labelClasses}>{t.signupFlow.experienceYears}</label>
-                                    <input type="number" name="experience_years" value={formData.experience_years} onChange={handleChange} className={inputClasses} required />
+                                    <input type="text" inputMode="numeric" name="experience_years" value={formData.experience_years || ''} onChange={handleChange} className={inputClasses} placeholder="0" required />
                                 </div>
                             </div>
                         </div>

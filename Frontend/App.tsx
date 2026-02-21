@@ -451,7 +451,7 @@ const SignupFlow: React.FC<{ onSignup: (p: UserProfile, password?: string) => vo
     password: '', confirmPassword: ''
   });
   const [signupFarms, setSignupFarms] = useState<Farm[]>([
-    { nickname: 'Home Farm', landType: 'Irrigated', waterResource: 'Borewell', soilType: 'Black', landSize: '', unit: 'Acre', crop: '', crops: [], state: '', district: '', village: '' }
+    { nickname: 'Home Farm', landType: 'Irrigated', waterResource: 'Borewell', soilType: 'Black', landSize: '', unit: 'Acre', crops: [], state: '', district: '', village: '' }
   ]);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -501,7 +501,7 @@ const SignupFlow: React.FC<{ onSignup: (p: UserProfile, password?: string) => vo
   const handleBack = () => setStep(prev => prev - 1);
 
   const addFarm = () => {
-    setSignupFarms(prev => [...prev, { nickname: `Farm ${prev.length + 1}`, landType: 'Irrigated', waterResource: 'Borewell', soilType: 'Black', landSize: '', unit: 'Acre', crop: '', crops: [], state: '', district: '', village: '' }]);
+    setSignupFarms(prev => [...prev, { nickname: `Farm ${prev.length + 1}`, landType: 'Irrigated', waterResource: 'Borewell', soilType: 'Black', landSize: '', unit: 'Acre', crops: [], state: '', district: '', village: '' }]);
     setCustomCropInputs(prev => [...prev, '']);
   };
 
@@ -525,7 +525,7 @@ const SignupFlow: React.FC<{ onSignup: (p: UserProfile, password?: string) => vo
       const updated = current.includes(cropName)
         ? current.filter(c => c !== cropName)
         : [...current, cropName];
-      newFarms[farmIndex] = { ...newFarms[farmIndex], crops: updated, crop: updated[0] || '' };
+      newFarms[farmIndex] = { ...newFarms[farmIndex], crops: updated };
       return newFarms;
     });
   };
@@ -538,7 +538,7 @@ const SignupFlow: React.FC<{ onSignup: (p: UserProfile, password?: string) => vo
       const current = newFarms[farmIndex].crops || [];
       if (current.includes(val)) return prev;
       const updated = [...current, val];
-      newFarms[farmIndex] = { ...newFarms[farmIndex], crops: updated, crop: updated[0] || '' };
+      newFarms[farmIndex] = { ...newFarms[farmIndex], crops: updated };
       return newFarms;
     });
     setCustomCropInputs(prev => { const n = [...prev]; n[farmIndex] = ''; return n; });
@@ -587,8 +587,7 @@ const SignupFlow: React.FC<{ onSignup: (p: UserProfile, password?: string) => vo
         email: formData.email,
         language: language,
         farms: finalFarms,
-        pin: formData.password,
-        experience_years: formData.experience_years || '0'
+        experience_years: formData.experience_years || ''
       };
 
       await onSignup(profile, formData.password);
@@ -676,7 +675,10 @@ const SignupFlow: React.FC<{ onSignup: (p: UserProfile, password?: string) => vo
                         </div>
                         <div>
                           <label className={labelClasses}>{t.signupFlow.experienceYears} *</label>
-                          <input required type="number" min="0" placeholder="0" className={inputClasses} value={formData.experience_years} onChange={e => setFormData({ ...formData, experience_years: e.target.value })} />
+                          <input required type="text" inputMode="numeric" placeholder="0" className={inputClasses} value={formData.experience_years || ''} onChange={e => {
+                            const val = e.target.value.replace(/\D/g, '');
+                            setFormData({ ...formData, experience_years: val });
+                          }} />
                         </div>
                       </div>
                       {/* 6-Box PIN */}
