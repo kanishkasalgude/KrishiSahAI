@@ -42,6 +42,7 @@ const getDisplayLocation = (u: UserProfile | null) => {
 
 
 const LanguageSelection: React.FC<{ onSelect: (lang: Language) => void }> = ({ onSelect }) => {
+  const { t } = useLanguage();
   const languages: { code: Language; label: string; sub: string }[] = [
     { code: 'EN', label: 'English', sub: 'Continue in English' },
     { code: 'HI', label: 'हिंदी', sub: 'हिंदी में जारी रखें' },
@@ -49,24 +50,25 @@ const LanguageSelection: React.FC<{ onSelect: (lang: Language) => void }> = ({ o
   ];
 
   return (
-    <div className="fixed inset-0 z-[100] bg-[#F1F8E9] flex items-center justify-center p-6 overflow-y-auto">
+    <div className="fixed inset-0 z-[100] bg-[#F1F8E9] flex items-center justify-center p-6 overflow-y-auto font-poppins">
       <div className="w-full max-w-4xl">
         <div className="text-center mb-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
-          <img src={logo} alt="KrishiSahAI Logo" className="h-24 mx-auto mb-6" />
-          <h1 className="text-4xl md:text-5xl font-black text-[#1B5E20] mb-4">Select Your Language</h1>
-          <p className="text-xl text-gray-600 font-medium">अपनी भाषा चुनें | आपली भाषा निवडा</p>
+          <img src={logo} alt="KrishiSahAI Logo" className="h-32 mx-auto mb-8 drop-shadow-lg" />
+          <h1 className="text-4xl md:text-6xl font-black text-[#1B5E20] mb-6 tracking-tight">{t.selectLanguage}</h1>
+          <p className="text-xl md:text-2xl text-gray-600 font-bold opacity-80">अपनी भाषा चुनें | आपली भाषा निवडा</p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {languages.map((l, i) => (
             <button
               key={l.code}
               onClick={() => onSelect(l.code)}
-              className="group bg-white border-b-8 border-r-8 border-[#1B5E20] hover:translate-y-[-4px] hover:translate-x-[-2px] hover:border-[#2E7D32] transition-all p-8 md:p-10 rounded-2xl text-left shadow-xl animate-in fade-in slide-in-from-bottom-6 duration-700"
-              style={{ animationDelay: `${i * 100}ms` }}
+              className="group relative bg-white border-b-8 border-r-8 border-[#1B5E20] hover:translate-y-[-6px] hover:translate-x-[-3px] hover:border-[#2E7D32] transition-all p-10 md:p-12 rounded-3xl text-center shadow-2xl animate-in fade-in slide-in-from-bottom-6 duration-700 overflow-hidden"
+              style={{ animationDelay: `${i * 150}ms` }}
             >
-              <h2 className="text-3xl font-black text-[#1B5E20] mb-2 group-hover:text-green-700 transition-colors">{l.label}</h2>
-              <p className="text-gray-500 font-bold uppercase tracking-wider text-sm">{l.sub}</p>
+              <div className="absolute top-0 left-0 w-2 h-full bg-[#1B5E20] group-hover:bg-[#2E7D32] transition-colors"></div>
+              <h2 className="text-4xl font-black text-[#1B5E20] mb-3 group-hover:text-green-700 transition-colors uppercase tracking-tight">{l.label}</h2>
+              <p className="text-gray-500 font-black uppercase tracking-widest text-xs opacity-60">{l.sub}</p>
             </button>
           ))}
         </div>
@@ -288,28 +290,29 @@ const Header: React.FC<{
   );
 };
 
-const LoginFlow: React.FC<{ onLogin: (p: string) => void; onSwitch: () => void }> = ({ onLogin, onSwitch }) => {
+const LoginFlow: React.FC<{ onLogin: (phone: string, password: string) => void; onSwitch: () => void }> = ({ onLogin, onSwitch }) => {
   const { t } = useLanguage();
   const [phone, setPhone] = useState('');
-  const [otp, setOtp] = useState('');
-  const [showOtp, setShowOtp] = useState(false);
+  const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+
+  const inputClasses = "w-full p-4 bg-white border-2 border-gray-200 text-gray-900 rounded-xl focus:outline-none focus:border-[#1B5E20] focus:ring-4 focus:ring-green-500/10 transition-all font-bold";
+  const labelClasses = "block text-sm font-black text-[#1B5E20] mb-2 ml-1";
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError('');
     try {
-      if (!showOtp) {
-        // Here we would trigger Firebase Phone Auth
-        // For now, simulating transition to OTP step
-        setShowOtp(true);
-      } else {
-        await onLogin(otp);
+      if (!phone || !password) {
+        setError("Please enter both phone number and password");
+        setLoading(false);
+        return;
       }
+      await onLogin(phone, password);
     } catch (err: any) {
-      setError("Invalid phone number or OTP");
+      setError("Invalid phone number or password");
     } finally {
       setLoading(false);
     }
@@ -334,35 +337,37 @@ const LoginFlow: React.FC<{ onLogin: (p: string) => void; onSwitch: () => void }
               )}
 
               <div className="space-y-4">
-                {!showOtp ? (
-                  <div className="animate-in fade-in slide-in-from-right-4 duration-500">
-                    <label className="block text-sm font-black text-[#1B5E20] mb-2 ml-1">{t.phoneNumber}</label>
-                    <div className="flex gap-2">
-                      <span className="p-4 bg-gray-100 border-2 border-gray-200 text-gray-500 rounded-xl font-bold flex items-center">+91</span>
-                      <input
-                        required
-                        type="tel"
-                        placeholder="XXXXX XXXXX"
-                        value={phone}
-                        onChange={(e) => setPhone(e.target.value.replace(/\D/g, '').slice(0, 10))}
-                        className="flex-1 p-4 bg-white border-2 border-gray-200 text-gray-900 rounded-xl focus:outline-none focus:border-[#1B5E20] focus:ring-4 focus:ring-green-500/10 transition-all font-bold"
-                      />
-                    </div>
-                  </div>
-                ) : (
-                  <div className="animate-in fade-in slide-in-from-right-4 duration-500">
-                    <label className="block text-sm font-black text-[#1B5E20] mb-2 ml-1">{t.enterOtp}</label>
+                <div className="animate-in fade-in slide-in-from-right-4 duration-500">
+                  <label className={labelClasses}>{t.phoneNumber}</label>
+                  <div className="flex gap-2">
+                    <span className="p-4 bg-gray-100 border-2 border-gray-200 text-gray-500 rounded-xl font-bold flex items-center">+91</span>
                     <input
                       required
-                      type="text"
-                      placeholder="XXXXXX"
-                      value={otp}
-                      onChange={(e) => setOtp(e.target.value.replace(/\D/g, '').slice(0, 6))}
-                      className="w-full p-4 bg-white border-2 border-gray-200 text-gray-900 rounded-xl focus:outline-none focus:border-[#1B5E20] focus:ring-4 focus:ring-green-500/10 transition-all font-bold text-center text-2xl tracking-[1em]"
+                      type="tel"
+                      placeholder="XXXXX XXXXX"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value.replace(/\D/g, '').slice(0, 10))}
+                      className={inputClasses}
                     />
-                    <button type="button" onClick={() => setShowOtp(false)} className="mt-2 text-sm font-bold text-[#1B5E20] hover:underline">Change Phone Number</button>
                   </div>
-                )}
+                </div>
+
+                <div className="animate-in fade-in slide-in-from-right-4 duration-500">
+                  <label className={labelClasses}>{t.password}</label>
+                  <input
+                    required
+                    type="password"
+                    placeholder="••••••••"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className={inputClasses}
+                  />
+                  <div className="flex justify-end mt-2">
+                    <button type="button" className="text-sm font-bold text-[#1B5E20] hover:underline cursor-not-allowed opacity-50">
+                      {t.forgotPassword}
+                    </button>
+                  </div>
+                </div>
               </div>
 
               <button
@@ -370,15 +375,15 @@ const LoginFlow: React.FC<{ onLogin: (p: string) => void; onSwitch: () => void }
                 disabled={loading}
                 className="w-full py-4 bg-[#1B5E20] text-white rounded-xl font-black text-lg hover:bg-[#2E7D32] transition-all shadow-lg hover:shadow-xl disabled:opacity-50 active:scale-[0.98] uppercase tracking-wider"
               >
-                {loading ? t.loading : (!showOtp ? t.getOtp : t.verifyAndLogin)}
+                {loading ? t.loading : t.loginButton}
               </button>
-
-              <div className="text-center mt-6">
-                <p className="text-gray-600 text-sm font-bold">
-                  {t.dontHaveAccount} <button type="button" onClick={onSwitch} className="text-[#1B5E20] font-black hover:underline">{t.signup}</button>
-                </p>
-              </div>
             </form>
+
+            <div className="text-center mt-8 pt-6 border-t border-gray-100">
+              <p className="text-gray-600 text-sm font-bold">
+                {t.dontHaveAccount} <button type="button" onClick={onSwitch} className="text-[#1B5E20] font-black hover:underline px-2 py-1">{t.signup}</button>
+              </p>
+            </div>
           </div>
         </div>
       </div>
@@ -396,14 +401,15 @@ const LoginFlow: React.FC<{ onLogin: (p: string) => void; onSwitch: () => void }
   );
 };
 
-const SignupFlow: React.FC<{ onSignup: (p: UserProfile) => void; onSwitch: () => void }> = ({ onSignup, onSwitch }) => {
+const SignupFlow: React.FC<{ onSignup: (p: UserProfile, password?: string) => void; onSwitch: () => void }> = ({ onSignup, onSwitch }) => {
   const { t, language } = useLanguage();
   const { setFarms, setActiveFarm } = useFarm();
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState<any>({
     name: '', phone: '', email: '',
     age: '', gender: 'male',
-    state: '', district: '', village: ''
+    state: '', district: '', village: '',
+    password: '', confirmPassword: ''
   });
   const [signupFarms, setSignupFarms] = useState<Farm[]>([
     { nickname: 'Home Farm', landType: 'Irrigated', waterResource: 'Borewell', soilType: 'Black', landSize: '', unit: 'Acre', crop: '' }
@@ -428,16 +434,20 @@ const SignupFlow: React.FC<{ onSignup: (p: UserProfile) => void; onSwitch: () =>
     setSignupFarms(newFarms);
   };
 
-  const handleSkip = async () => {
-    setLoading(true);
-    await finalizeSignup([]);
-  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (step < 2) {
-      if (!formData.name || !formData.phone || !formData.age || !formData.state) {
+      if (!formData.name || !formData.phone || !formData.age || !formData.state || !formData.district || !formData.village || !formData.password) {
         setError("Please fill all required fields");
+        return;
+      }
+      if (formData.password.length < 6) {
+        setError("Password must be at least 6 characters");
+        return;
+      }
+      if (formData.password !== formData.confirmPassword) {
+        setError("Passwords do not match");
         return;
       }
       handleNext();
@@ -475,7 +485,7 @@ const SignupFlow: React.FC<{ onSignup: (p: UserProfile) => void; onSwitch: () =>
         experience_years: '0'
       };
 
-      await onSignup(profile);
+      await onSignup(profile, formData.password);
     } catch (err: any) {
       setError(err.message || "Signup failed. Please try again.");
       setLoading(false);
@@ -545,6 +555,16 @@ const SignupFlow: React.FC<{ onSignup: (p: UserProfile) => void; onSwitch: () =>
                         <label className={labelClasses}>{t.signupFlow.phone} *</label>
                         <input required placeholder={t.signupFlow.placeholders.phone} className={inputClasses} value={formData.phone} onChange={e => setFormData({ ...formData, phone: e.target.value.replace(/\D/g, '').slice(0, 10) })} />
                       </div>
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <label className={labelClasses}>{t.signupFlow.password} *</label>
+                          <input required type="password" placeholder="••••••••" className={inputClasses} value={formData.password} onChange={e => setFormData({ ...formData, password: e.target.value })} />
+                        </div>
+                        <div>
+                          <label className={labelClasses}>{t.signupFlow.confirmPassword} *</label>
+                          <input required type="password" placeholder="••••••••" className={inputClasses} value={formData.confirmPassword} onChange={e => setFormData({ ...formData, confirmPassword: e.target.value })} />
+                        </div>
+                      </div>
                       <div>
                         <label className={labelClasses}>{t.signupFlow.email} ({t.other})</label>
                         <input type="email" placeholder={t.signupFlow.placeholders.email} className={inputClasses} value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} />
@@ -553,7 +573,7 @@ const SignupFlow: React.FC<{ onSignup: (p: UserProfile) => void; onSwitch: () =>
                   </div>
 
                   <div>
-                    <h3 className={sectionTitleClasses}>Location Details</h3>
+                    <h3 className={sectionTitleClasses}>{t.signupFlow.locationDetails}</h3>
                     <div className="space-y-4">
                       <div>
                         <label className={labelClasses}>{t.signupFlow.state} *</label>
@@ -612,7 +632,7 @@ const SignupFlow: React.FC<{ onSignup: (p: UserProfile) => void; onSwitch: () =>
                             </select>
                           </div>
                           <div>
-                            <label className={labelClasses}>{t.signupFlow.waterAvailability.borewell}</label> {/* Label for water availability */}
+                            <label className={labelClasses}>{t.signupFlow.waterAvailabilityTitle}</label> {/* Label for water availability */}
                             <select className={inputClasses} value={farm.waterResource} onChange={e => updateFarm(index, 'waterResource', e.target.value)}>
                               <option value="Borewell">{t.signupFlow.waterAvailability.borewell}</option>
                               <option value="Canal">{t.signupFlow.waterAvailability.canal}</option>
@@ -644,7 +664,7 @@ const SignupFlow: React.FC<{ onSignup: (p: UserProfile) => void; onSwitch: () =>
                           <label className={labelClasses}>{t.mainCrops}</label>
                           <div className="flex gap-2">
                             <select className={inputClasses} value={farm.crop} onChange={e => updateFarm(index, 'crop', e.target.value)}>
-                              <option value="">{t.signupFlow.placeholders.village}</option>
+                              <option value="">Select Crop</option>
                               <option value="No Crop Currently">{t.noCropCurrently}</option>
                               {t.signupFlow.crops.map(c => <option key={c} value={c}>{c}</option>)}
                             </select>
@@ -677,11 +697,6 @@ const SignupFlow: React.FC<{ onSignup: (p: UserProfile) => void; onSwitch: () =>
                     {loading ? t.loading : (step === 2 ? t.submit : t.next)}
                   </button>
                 </div>
-                {step === 2 && !loading && (
-                  <button type="button" onClick={handleSkip} className="w-full py-3 bg-gray-50 text-gray-500 rounded-xl font-bold text-sm hover:bg-gray-100 transition-all uppercase tracking-widest text-center border-2 border-gray-100">
-                    {t.skipForNow}
-                  </button>
-                )}
               </div>
 
               <div className="text-center mt-4">
@@ -692,14 +707,14 @@ const SignupFlow: React.FC<{ onSignup: (p: UserProfile) => void; onSwitch: () =>
             </form>
           </div>
         </div>
-      </div>
-    </div>
+      </div >
+    </div >
   );
 };
 
 
 const AppContent: React.FC = () => {
-  const { setLanguage, hasSelectedLanguage, t } = useLanguage();
+  const { setLanguage, hasSelectedLanguage, t, language } = useLanguage();
   const { setFarms, setActiveFarm } = useFarm();
 
   const [user, setUser] = useState<UserProfile | null>(null);
@@ -728,6 +743,11 @@ const AppContent: React.FC = () => {
             setFarms(profile.farms || []);
             if (profile.farms && profile.farms.length > 0) setActiveFarm(profile.farms[0]);
             fetchWeather(getBestLocation(profile));
+
+            // Mandatory Language Sync: If user has a preference, sync it global state
+            if (profile.language && profile.language !== language) {
+              setLanguage(profile.language);
+            }
           }
         });
       } else {
@@ -742,7 +762,7 @@ const AppContent: React.FC = () => {
       unsubscribe();
       if (profileUnsub) profileUnsub();
     };
-  }, []);
+  }, [setLanguage, setFarms, setActiveFarm, language]);
 
   const fetchWeather = async (location: string) => {
     if (!location) return;
@@ -774,37 +794,32 @@ const AppContent: React.FC = () => {
 
   // ... (Login/Signup logic omitted for brevity, no changes needed inside)
 
-  const handleLogin = async (otp: string) => {
-    // Mock login for now
-    const mockProfile: UserProfile = {
-      name: 'Kanishka Salgude',
-      phone: '1234567890',
-      age: '25',
-      gender: 'male',
-      language: 'EN',
-      location: { state: 'Maharashtra', district: 'Pune', village: 'Maval' },
-      farms: [
-        { nickname: 'Home Farm', landType: 'Irrigated', waterResource: 'Borewell', soilType: 'Black', landSize: '5', unit: 'Acre', crop: 'Rice' }
-      ],
-      experience_years: '5'
-    };
-    setUser(mockProfile);
-    setFarms(mockProfile.farms);
-    if (mockProfile.farms.length > 0) setActiveFarm(mockProfile.farms[0]);
+  const handleLogin = async (phone: string, password?: string) => {
+    if (!password) {
+      throw new Error("Password required");
+    }
+    const email = `${phone}@krishisahai.fake`;
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+    } catch (error: any) {
+      console.error("Login Error:", error);
+      throw error;
+    }
   };
 
-  const handleSignup = async (profile: UserProfile) => {
-    setUser(profile);
-    setFarms(profile.farms);
-    if (profile.farms.length > 0) setActiveFarm(profile.farms[0]);
+  const handleSignup = async (profile: UserProfile, password?: string) => {
+    if (!password) {
+      throw new Error("Password required");
+    }
+    const email = `${profile.phone}@krishisahai.fake`;
     try {
-      // In phone auth, user is already created or we create them now
-      // This is a placeholder for actual registration
-      if (auth.currentUser) {
-        await setDoc(doc(db, "users", auth.currentUser.uid), profile);
-      }
-    } catch (err: any) {
-      throw err;
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      // Ensure the current application language is saved with the profile
+      const finalProfile = { ...profile, language };
+      await setDoc(doc(db, "users", userCredential.user.uid), finalProfile);
+    } catch (error: any) {
+      console.error("Signup Error:", error);
+      throw error;
     }
   };
 

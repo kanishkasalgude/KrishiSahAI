@@ -38,6 +38,7 @@
     "sectionLocation": "स्थान तपशील",
     "confirmPassword": "पासवर्डची पुष्टी करा",
     "landArea": "एकूण जमिनीचे क्षेत्रफळ",
+    "landSize": "जमिनीचा आकार",
     "unitAcre": "एकर",
     "unitHectare": "हेक्टर",
     "landType": "जमिनीचा प्रकार",
@@ -59,8 +60,10 @@
     "landSizeAcres": "जमिनीचा आकार (एकर)",
     "soilType": "मातीचा प्रकार",
     "waterAvailability": "पाण्याची उपलब्धता",
+    "waterAvailabilityTitle": "पाण्याची उपलब्धता",
     "mainCrops": "मुख्य पिके",
     "saveChanges": "बदल जतन करा",
+    "saveProfile": "प्रोफाइल जतन करा",
     "saving": "जतन करत आहे...",
     "profileUpdated": "प्रोफाइल यशस्वीरित्या अपडेट केले!",
     "profileUpdateFailed": "प्रोफाइल अपडेट करण्यात अयशस्वी.",
@@ -257,6 +260,7 @@
         "email": "ईमेल",
         "password": "पासवर्ड",
         "confirmPassword": "पासवर्डची पुष्टी करा",
+        "waterAvailabilityTitle": "पाण्याची उपलब्धता",
         "state": "राज्य",
         "district": "जिल्हा",
         "village": "गाव/शहर",
@@ -298,7 +302,8 @@
                 "canal": "कालवा",
                 "rainfed": "कोरडवाहू",
                 "well": "विहीर",
-                "river": "नदी"
+                "river": "नदी",
+                "tank": "टाकी"
             },
             "states": [
                 "आंध्र प्रदेश",
@@ -358,7 +363,9 @@
         }
     },
     "selectLanguage": "तुमची भाषा निवडा",
-    "skipForNow": "आता सोडा",
+    "switchFarm": "शेत बदला",
+    "viewWeatherDetails": "हवामान तपशील पहा",
+    "refreshWeather": "हवामान रिफ्रेश करा",
     "farmNickname": "शेतीचे टोपणनाव",
     "addAnotherFarm": "आणखी एक शेत जोडा",
     "removeFarm": "शेत काढून टाका",
@@ -369,8 +376,8 @@
     "addNewFarm": "नवीन फार्म जोडा",
     "knowledgeHubTitle": "ज्ञान केंद्र",
     "knowledgeHubSubtitle": "आधुनिक शेती तंत्र आणि अंतर्दृष्टी शिका",
-    "enterOtp": "ओटीपी प्रविष्ट करा",
-    "getOtp": "ओटीपी मिळवा",
-    "verifyAndLogin": "सत्यापित करा आणि लॉगिन करा",
+    "enterPassword": "पासवर्ड प्रविष्ट करा",
+    "loginButton": "लॉगिन करा",
+    "signupButton": "साइन अप करा",
     "landSizeUnit": "युनिट"
 }

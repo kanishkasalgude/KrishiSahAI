@@ -38,6 +38,7 @@
     "sectionLocation": "स्थान विवरण",
     "confirmPassword": "पासवर्ड की पुष्टि करें",
     "landArea": "कुल भूमि क्षेत्र",
+    "landSize": "भूमि का आकार",
     "unitAcre": "एकड़",
     "unitHectare": "हेक्टेयर",
     "landType": "भूमि का प्रकार",
@@ -59,8 +60,10 @@
     "landSizeAcres": "भूमि का आकार (एकड़)",
     "soilType": "मिट्टी का प्रकार",
     "waterAvailability": "पानी की उपलब्धता",
+    "waterAvailabilityTitle": "पानी की उपलब्धता",
     "mainCrops": "मुख्य फसलें",
     "saveChanges": "परिवर्तनों को सहेजें",
+    "saveProfile": "प्रोफ़ाइल सहेजें",
     "saving": "सहेज रहा है...",
     "profileUpdated": "प्रोफाइल सफलतापूर्वक अपडेट किया गया!",
     "profileUpdateFailed": "प्रोफाइल अपडेट करने में विफल।",
@@ -257,6 +260,7 @@
         "email": "ईमेल",
         "password": "पासवर्ड",
         "confirmPassword": "पासवर्ड की पुष्टि करें",
+        "waterAvailabilityTitle": "जल की उपलब्धता",
         "state": "राज्य",
         "district": "जिला",
         "village": "गांव/शहर",
@@ -298,7 +302,8 @@
                 "canal": "नहर",
                 "rainfed": "वर्षा आधारित",
                 "well": "कुआं",
-                "river": "नदी"
+                "river": "नदी",
+                "tank": "टैंक"
             },
             "states": [
                 "आंध्र प्रदेश",
@@ -358,7 +363,9 @@
         }
     },
     "selectLanguage": "अपनी भाषा चुनें",
-    "skipForNow": "अभी छोड़ें",
+    "switchFarm": "खेत बदलें",
+    "viewWeatherDetails": "मौसम विवरण देखें",
+    "refreshWeather": "मौसम ताज़ा करें",
     "farmNickname": "खेत का उपनाम",
     "addAnotherFarm": "एक और खेत जोड़ें",
     "removeFarm": "खेत निकालें",
@@ -369,8 +376,8 @@
     "addNewFarm": "नया खेत जोड़ें",
     "knowledgeHubTitle": "ज्ञान केंद्र",
     "knowledgeHubSubtitle": "आधुनिक खेती की तकनीकें और अंतर्दृष्टि सीखें",
-    "enterOtp": "ओटीपी दर्ज करें",
-    "getOtp": "ओटीपी प्राप्त करें",
-    "verifyAndLogin": "सत्यापित करें और लॉगिन करें",
+    "enterPassword": "पासवर्ड दर्ज करें",
+    "loginButton": "लॉगिन करें",
+    "signupButton": "साइन अप करें",
     "landSizeUnit": "इकाई"
 }

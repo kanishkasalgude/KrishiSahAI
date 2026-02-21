@@ -38,6 +38,7 @@
     "sectionLocation": "Location Details",
     "confirmPassword": "Confirm Password",
     "landArea": "Total Land Area",
+    "landSize": "Land Size",
     "unitAcre": "Acre",
     "unitHectare": "Hectare",
     "landType": "Type of Land",
@@ -59,8 +60,10 @@
     "landSizeAcres": "Land Size (acres)",
     "soilType": "Soil Type",
     "waterAvailability": "Water Availability",
+    "waterAvailabilityTitle": "Water Availability",
     "mainCrops": "Main Crops Grown",
     "saveChanges": "Save Changes",
+    "saveProfile": "Save Profile",
     "saving": "Saving...",
     "profileUpdated": "Profile updated successfully!",
     "profileUpdateFailed": "Failed to update profile.",
@@ -256,6 +259,7 @@
         "email": "Email",
         "password": "Password",
         "confirmPassword": "Confirm Password",
+        "waterAvailabilityTitle": "Water Availability",
         "state": "State",
         "district": "District",
         "village": "Village/Town",
@@ -298,7 +302,8 @@
             "canal": "Canal",
             "rainfed": "Rainfed",
             "well": "Well",
-            "river": "River"
+            "river": "River",
+            "tank": "Tank"
         },
         "states": [
             "Andhra Pradesh",
@@ -357,7 +362,9 @@
         ]
     },
     "selectLanguage": "Select Your Language",
-    "skipForNow": "Skip for Now",
+    "switchFarm": "Switch Farm",
+    "viewWeatherDetails": "View Weather Details",
+    "refreshWeather": "Refresh Weather",
     "farmNickname": "Farm Nickname",
     "addAnotherFarm": "Add Another Farm",
     "removeFarm": "Remove Farm",
@@ -368,8 +375,8 @@
     "addNewFarm": "Add New Farm",
     "knowledgeHubTitle": "Knowledge Hub",
     "knowledgeHubSubtitle": "Learn modern farming techniques and insights",
-    "enterOtp": "Enter OTP",
-    "getOtp": "Get OTP",
-    "verifyAndLogin": "Verify & Login",
+    "enterPassword": "Enter Password",
+    "loginButton": "Login",
+    "signupButton": "Sign Up",
     "landSizeUnit": "Unit"
 }
