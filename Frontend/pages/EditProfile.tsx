@@ -139,7 +139,7 @@ const EditProfile: React.FC = () => {
         <div className="min-h-screen p-4 md:p-8 bg-[#F5F9F6]">
             <div className="max-w-4xl mx-auto">
                 <button onClick={() => navigate(-1)} className="flex items-center gap-2 text-gray-600 font-bold mb-6 hover:text-[#1B5E20] transition-colors">
-                    <ArrowLeft className="w-5 h-5" /> Back
+                    <ArrowLeft className="w-5 h-5" /> {t.back}
                 </button>
 
                 <div className="bg-white rounded-[40px] border border-green-100 shadow-xl p-6 md:p-10">
@@ -160,7 +160,7 @@ const EditProfile: React.FC = () => {
                                 <div className="w-8 h-8 rounded-lg bg-green-50 flex items-center justify-center">
                                     <Globe className="w-4 h-4 text-[#1B5E20]" />
                                 </div>
-                                Language Preference
+                                {t.selectLanguage}
                             </h2>
                             <div className="grid grid-cols-3 gap-4">
                                 {['EN', 'HI', 'MR'].map((l) => (
@@ -206,19 +206,19 @@ const EditProfile: React.FC = () => {
                                 <div className="w-8 h-8 rounded-lg bg-green-50 flex items-center justify-center">
                                     <User className="w-4 h-4 text-[#1B5E20]" />
                                 </div>
-                                Personal Information
+                                {t.personalInfo}
                             </h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
-                                    <label className={labelClasses}>Full Name</label>
+                                    <label className={labelClasses}>{t.fullName}</label>
                                     <input name="name" value={formData.name} onChange={handleChange} className={inputClasses} required />
                                 </div>
                                 <div>
-                                    <label className={labelClasses}>Phone Number</label>
+                                    <label className={labelClasses}>{t.phoneNumber}</label>
                                     <input name="phone" value={formData.phone} onChange={handleChange} className={inputClasses} required />
                                 </div>
                                 <div className="md:col-span-2">
-                                    <label className={labelClasses}>Email Address (Optional)</label>
+                                    <label className={labelClasses}>{t.email} ({t.other})</label>
                                     <input name="email" value={formData.email} onChange={handleChange} className={inputClasses} />
                                 </div>
                             </div>
@@ -230,7 +230,7 @@ const EditProfile: React.FC = () => {
                                 <div className="w-8 h-8 rounded-lg bg-green-50 flex items-center justify-center">
                                     <MapPin className="w-4 h-4 text-[#1B5E20]" />
                                 </div>
-                                Location Information
+                                {t.locationDetails}
                             </h2>
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                                 <div>
@@ -258,10 +258,10 @@ const EditProfile: React.FC = () => {
                                     <div className="w-8 h-8 rounded-lg bg-green-50 flex items-center justify-center">
                                         <Sprout className="w-4 h-4 text-[#1B5E20]" />
                                     </div>
-                                    Farm Information
+                                    {t.farmInfo}
                                 </h2>
                                 <button type="button" onClick={addFarm} className="flex items-center gap-2 px-4 py-2 bg-green-50 text-[#1B5E20] rounded-xl font-bold hover:bg-green-100 transition-all text-sm">
-                                    <Plus size={16} /> Add Farm
+                                    <Plus size={16} /> {t.addNewFarm}
                                 </button>
                             </div>
 
@@ -287,27 +287,33 @@ const EditProfile: React.FC = () => {
                                                 <select className={inputClasses} value={farm.landType} onChange={e => updateFarm(index, 'landType', e.target.value)}>
                                                     <option value="Irrigated">{t.irrigated}</option>
                                                     <option value="Rainfed">{t.rainfed}</option>
-                                                    <option value="Both">Both</option>
+                                                    <option value="Both">{t.mixed || "Mixed"}</option>
                                                 </select>
                                             </div>
                                             <div>
-                                                <label className={labelClasses}>Water Resource</label>
+                                                <label className={labelClasses}>{t.waterAvailabilityTitle}</label>
                                                 <select className={inputClasses} value={farm.waterResource} onChange={e => updateFarm(index, 'waterResource', e.target.value)}>
-                                                    <option>Borewell</option><option>Canal</option><option>Rainfed</option><option>River</option><option>Tank</option><option>Other</option>
+                                                    <option value="Borewell">{t.signupFlow.waterAvailability.borewell}</option>
+                                                    <option value="Canal">{t.signupFlow.waterAvailability.canal}</option>
+                                                    <option value="Rainfed">{t.signupFlow.waterAvailability.rainfed}</option>
+                                                    <option value="River">{t.signupFlow.waterAvailability.river}</option>
+                                                    <option value="Tank">{t.signupFlow.waterAvailability.tank}</option>
+                                                    <option value="Other">{t.other}</option>
                                                 </select>
                                             </div>
                                             <div>
-                                                <label className={labelClasses}>Land Size</label>
+                                                <label className={labelClasses}>{t.landSize}</label>
                                                 <div className="flex gap-2">
                                                     <input type="number" step="0.1" placeholder="Size" className="flex-1 p-4 bg-[#E8F5E9] border border-[#E6E6E6] rounded-2xl focus:outline-none focus:border-[#1B5E20] font-medium" value={farm.landSize} onChange={e => updateFarm(index, 'landSize', e.target.value)} />
                                                     <select className="w-32 p-4 bg-white border border-[#E6E6E6] rounded-2xl focus:outline-none focus:border-[#1B5E20] font-bold" value={farm.unit} onChange={e => updateFarm(index, 'unit', e.target.value)}>
-                                                        <option>Acre</option><option>Hectare</option>
+                                                        <option value="Acre">{t.unitAcre}</option>
+                                                        <option value="Hectare">{t.unitHectare}</option>
                                                     </select>
                                                 </div>
                                             </div>
                                             <div>
-                                                <label className={labelClasses}>Crop Grown</label>
-                                                <input placeholder="Current crop" className={inputClasses} value={farm.crop} onChange={e => updateFarm(index, 'crop', e.target.value)} />
+                                                <label className={labelClasses}>{t.mainCrops}</label>
+                                                <input placeholder={t.customCropPlaceholder} className={inputClasses} value={farm.crop} onChange={e => updateFarm(index, 'crop', e.target.value)} />
                                             </div>
                                         </div>
                                     </div>
@@ -323,7 +329,7 @@ const EditProfile: React.FC = () => {
                             {loading ? (
                                 <RefreshCw className="w-7 h-7 animate-spin" />
                             ) : (
-                                <><Save className="w-6 h-6" /> Save Profile</>
+                                <><Save className="w-6 h-6" /> {t.saveProfile}</>
                             )}
                         </button>
                     </form>
