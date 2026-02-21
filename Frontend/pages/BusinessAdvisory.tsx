@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Language } from '../types';
-import { translations } from '../src/i18n/translations';
+import { useLanguage } from '../src/context/LanguageContext';
+import { useFarm } from '../src/context/FarmContext';
 import { api } from '../src/services/api';
 import { auth } from '../firebase';
 import { UserProfile } from '../types';
@@ -51,8 +52,9 @@ interface Recommendation {
     implementation_steps?: string[];
 }
 
-const BusinessAdvisory: React.FC<{ lang: Language; user: UserProfile | null }> = ({ lang, user }) => {
-    const t = translations[lang] || translations['EN'];
+const BusinessAdvisory: React.FC = () => {
+    const { t, language: lang } = useLanguage();
+    const { activeFarm, farms } = useFarm();
     const navigate = useNavigate();
     const location = useLocation(); // To check for restored state
     const [step, setStep] = useState<number>(0); // 0: Landing, 1: Form, 2: Results
@@ -87,16 +89,16 @@ const BusinessAdvisory: React.FC<{ lang: Language; user: UserProfile | null }> =
         }
     }, [location.state]);
 
-    // Set total land from user profile prop
+    // Set total land from active farm or cumulative farms
     useEffect(() => {
-        if (user) {
-            // Handle both camelCase (frontend type) and snake_case (potential DB legacy)
-            const size = user.landSize || (user as any).land_size;
-            if (size) {
-                setFormData(prev => ({ ...prev, totalLand: size.toString() }));
-            }
+        if (activeFarm) {
+            setFormData(prev => ({ ...prev, totalLand: activeFarm.landSize.toString(), waterSource: activeFarm.waterResource }));
+        } else if (farms.length > 0) {
+            const totalSize = farms.reduce((acc, farm) => acc + (parseFloat(farm.landSize) || 0), 0);
+            setFormData(prev => ({ ...prev, totalLand: totalSize.toString() }));
         }
-    }, [user]);
+    }, [activeFarm, farms]);
+
 
     const interestOptions = [
         "Dairy Farming", "Poultry", "Greenhouse Farming", "Goat Farming",
