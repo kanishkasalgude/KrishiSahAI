@@ -14,19 +14,37 @@ export const FarmProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const [farms, setFarms] = useState<Farm[]>([]);
     const [activeFarm, setActiveFarm] = useState<Farm | null>(null);
 
+    // Helper to remove duplicate crops (case-insensitive)
+    const deduplicateFarms = (farmList: Farm[]): Farm[] => {
+        return farmList.map(farm => {
+            if (!farm.crops || !Array.isArray(farm.crops)) return farm;
+            const seen = new Set<string>();
+            const uniqueCrops: string[] = [];
+            for (const crop of farm.crops) {
+                const lowerCrop = crop.toLowerCase().trim();
+                if (!seen.has(lowerCrop)) {
+                    seen.add(lowerCrop);
+                    uniqueCrops.push(crop.trim());
+                }
+            }
+            return { ...farm, crops: uniqueCrops };
+        });
+    };
+
     // Persist active farm index to localStorage
     useEffect(() => {
         const savedFarms = localStorage.getItem('userFarms');
         if (savedFarms) {
             try {
                 const parsedFarms = JSON.parse(savedFarms);
-                setFarms(parsedFarms);
+                const dedupedFarms = deduplicateFarms(parsedFarms);
+                setFarms(dedupedFarms);
 
                 const savedActiveIndex = localStorage.getItem('activeFarmIndex');
-                if (savedActiveIndex !== null && parsedFarms[parseInt(savedActiveIndex)]) {
-                    setActiveFarm(parsedFarms[parseInt(savedActiveIndex)]);
-                } else if (parsedFarms.length > 0) {
-                    setActiveFarm(parsedFarms[0]);
+                if (savedActiveIndex !== null && dedupedFarms[parseInt(savedActiveIndex)]) {
+                    setActiveFarm(dedupedFarms[parseInt(savedActiveIndex)]);
+                } else if (dedupedFarms.length > 0) {
+                    setActiveFarm(dedupedFarms[0]);
                 }
             } catch (e) {
                 console.error("Failed to parse farms from storage", e);
@@ -35,6 +53,9 @@ export const FarmProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }, []);
 
     const handleSetActiveFarm = (farm: Farm | null) => {
+        if (farm) {
+            farm = deduplicateFarms([farm])[0];
+        }
         setActiveFarm(farm);
         if (farm) {
             const index = farms.findIndex(f => f.nickname === farm.nickname && f.landSize === farm.landSize);
@@ -47,12 +68,13 @@ export const FarmProvider: React.FC<{ children: React.ReactNode }> = ({ children
     };
 
     const handleSetFarms = (newFarms: Farm[]) => {
-        setFarms(newFarms);
-        localStorage.setItem('userFarms', JSON.stringify(newFarms));
+        const dedupedFarms = deduplicateFarms(newFarms);
+        setFarms(dedupedFarms);
+        localStorage.setItem('userFarms', JSON.stringify(dedupedFarms));
         // Reset active farm if common
-        if (newFarms.length > 0 && (!activeFarm || !newFarms.find(f => f.nickname === activeFarm.nickname))) {
-            handleSetActiveFarm(newFarms[0]);
-        } else if (newFarms.length === 0) {
+        if (dedupedFarms.length > 0 && (!activeFarm || !dedupedFarms.find(f => f.nickname === activeFarm.nickname))) {
+            handleSetActiveFarm(dedupedFarms[0]);
+        } else if (dedupedFarms.length === 0) {
             handleSetActiveFarm(null);
         }
     };
