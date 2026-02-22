@@ -46,41 +46,6 @@ const getDisplayLocation = (farm: Farm | null, lang: string) => {
 };
 
 
-const LanguageSelection: React.FC<{ onSelect: (lang: Language) => void }> = ({ onSelect }) => {
-  const { t } = useLanguage();
-  const languages: { code: Language; label: string; sub: string }[] = [
-    { code: 'EN', label: 'English', sub: 'Continue in English' },
-    { code: 'HI', label: 'हिंदी', sub: 'हिंदी में जारी रखें' },
-    { code: 'MR', label: 'मराठी', sub: 'मराठीत सुरू ठेवा' },
-  ];
-
-  return (
-    <div className="fixed inset-0 z-[100] bg-[#F1F8E9] flex items-center justify-center p-6 overflow-y-auto font-poppins">
-      <div className="w-full max-w-4xl">
-        <div className="text-center mb-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
-          <img src={logo} alt="KrishiSahAI Logo" className="h-32 mx-auto mb-8 drop-shadow-lg" />
-          <h1 className="text-4xl md:text-6xl font-black text-[#1B5E20] mb-6 tracking-tight">{t.selectLanguage}</h1>
-          <p className="text-xl md:text-2xl text-gray-600 font-bold opacity-80">अपनी भाषा चुनें | आपली भाषा निवडा</p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {languages.map((l, i) => (
-            <button
-              key={l.code}
-              onClick={() => onSelect(l.code)}
-              className="group relative bg-white border-b-8 border-r-8 border-[#1B5E20] hover:translate-y-[-6px] hover:translate-x-[-3px] hover:border-[#2E7D32] transition-all p-6 md:p-12 rounded-3xl text-center shadow-2xl animate-in fade-in slide-in-from-bottom-6 duration-700 overflow-hidden"
-              style={{ animationDelay: `${i * 150}ms` }}
-            >
-              <div className="absolute top-0 left-0 w-2 h-full bg-[#1B5E20] group-hover:bg-[#2E7D32] transition-colors"></div>
-              <h2 className="text-3xl md:text-4xl font-black text-[#1B5E20] mb-3 group-hover:text-green-700 transition-colors uppercase tracking-tight">{l.label}</h2>
-              <p className="text-gray-500 font-black uppercase tracking-widest text-[10px] md:text-xs opacity-60">{l.sub}</p>
-            </button>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-};
 
 const Header: React.FC<{
 
@@ -913,7 +878,7 @@ const SignupFlow: React.FC<{ onSignup: (p: UserProfile, password?: string) => vo
 
 
 const AppContent: React.FC = () => {
-  const { setLanguage, hasSelectedLanguage, t, language } = useLanguage();
+  const { setLanguage, t, language } = useLanguage();
   const { setFarms, setActiveFarm, activeFarm } = useFarm();
   const location = useLocation();
 
@@ -1040,8 +1005,6 @@ const AppContent: React.FC = () => {
         <div className="min-h-screen flex items-center justify-center text-[#1F5F4A] font-bold text-xl animate-pulse">
           <RefreshCw className="animate-spin mr-2" /> {t.loading}
         </div>
-      ) : !hasSelectedLanguage ? (
-        <LanguageSelection onSelect={setLanguage} />
       ) : !user ? (
         authView === 'login' ? <LoginFlow onLogin={handleLogin} onSwitch={() => setAuthView('signup')} /> : <SignupFlow onSignup={handleSignup} onSwitch={() => setAuthView('login')} />
       ) : (
@@ -1085,19 +1048,21 @@ const AppContent: React.FC = () => {
             <Route path="/chat" element={<Chatbot />} />
           </Routes>
 
-          {/* Floating Chatbot Button */}
-          <Link
-            to="/chat"
-            className="fixed bottom-6 right-6 w-16 h-16 bg-white hover:bg-gray-50 text-[#1B5E20] rounded-full flex items-center justify-center shadow-2xl transition-all hover:scale-110 z-50 group border-2 border-[#1B5E20]"
-            title="Chat with AI"
-          >
-            <img src={logo} alt="Chatbot" className="w-10 h-10 object-contain drop-shadow" />
+          {/* Floating Chatbot Button — hidden on the chat page itself */}
+          {location.pathname !== '/chat' && (
+            <Link
+              to="/chat"
+              className="fixed bottom-6 right-6 w-16 h-16 bg-white hover:bg-gray-50 text-[#1B5E20] rounded-full flex items-center justify-center shadow-2xl transition-all hover:scale-110 z-50 group border-2 border-[#1B5E20]"
+              title="Chat with AI"
+            >
+              <img src={logo} alt="Chatbot" className="w-10 h-10 object-contain drop-shadow" />
 
-            {/* Tooltip */}
-            <span className="absolute right-full mr-4 bg-white text-[#1B5E20] px-3 py-1.5 rounded-lg text-sm font-bold shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all whitespace-nowrap border border-green-100">
-              Ask KrishiSahAI
-            </span>
-          </Link>
+              {/* Tooltip */}
+              <span className="absolute right-full mr-4 bg-white text-[#1B5E20] px-3 py-1.5 rounded-lg text-sm font-bold shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all whitespace-nowrap border border-green-100">
+                Ask KrishiSahAI
+              </span>
+            </Link>
+          )}
 
         </div>
       )}
