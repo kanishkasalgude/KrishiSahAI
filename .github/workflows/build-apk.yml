@@ -6,7 +6,6 @@ on:
       manifest_url:
         description: 'Cloudflare Tunnel Manifest URL (e.g. https://xyz.trycloudflare.com/manifest.webmanifest)'
         required: true
-        default: 'https://krishisahai.trycloudflare.com/manifest.webmanifest'
 
 jobs:
   build:
@@ -27,35 +26,40 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
+      - name: Verify Manifest URL
+        run: |
+          echo "Checking if manifest is reachable: ${{ github.event.inputs.manifest_url }}"
+          curl -f -I "${{ github.event.inputs.manifest_url }}" || (echo "ERROR: Manifest URL is not reachable from GitHub. Ensure your Cloudflare Tunnel is running and accessible." && exit 1)
+
       - name: Install Bubblewrap
-        run: npm install -g @bubblewrap/cli
+        run: sudo npm install -g @bubblewrap/cli
 
       - name: Configure Bubblewrap
         run: |
           mkdir -p ~/.bubblewrap
-          echo '{"jdkPath":"/usr/lib/jvm/temurin-17-amd64","androidSdkPath":"/usr/local/lib/android/sdk"}' > ~/.bubblewrap/config.json
+          echo "{\"jdkPath\":\"$JAVA_HOME\",\"androidSdkPath\":\"$ANDROID_SDK_ROOT\"}" > ~/.bubblewrap/config.json
+          cat ~/.bubblewrap/config.json
 
       - name: Initialize TWA Project
         run: |
           mkdir android-app
           cd android-app
-          # Use yes to accept all defaults from the manifest
-          yes "" | bubblewrap init --manifest="${{ github.event.inputs.manifest_url }}"
+          # Bubblewrap init can be tricky with interactive prompts. 
+          # We use yes to accept all defaults and suppress standard output except errors.
+          yes "" | bubblewrap init --manifest="${{ github.event.inputs.manifest_url }}" --confirmResNames
 
       - name: Build APK
         run: |
           cd android-app
-          # Bubblewrap build requires signing keys. For CI, we can use the 'build' command with dummy inputs or skip signing if just for testing.
-          # However, to install on a phone, it MUST be signed.
-          # Bubblewrap build will generate a key if one doesn't exist.
-          # We pipe answers for the key generation.
-          yes "password" | bubblewrap build
+          # We need to provide dummy answers for signing key generation
+          # 1. Key store password
+          # 2. Key password
+          # 3. Name, unit, org, etc.
+          printf "password\npassword\nJohn Doe\nIT\nKrishiSahAI\nBaramati\nMaharashtra\nIN\nyes\n" | bubblewrap build
           
       - name: Find APK
-# Identify the generated APK name (usually app-release-signed.apk)
         run: |
-          ls -R android-app/
-          echo "APK_PATH=$(find android-app -name "*.apk" | head -n 1)" >> $GITHUB_ENV
+          echo "APK_PATH=$(find android-app -name "*signed.apk" | head -n 1)" >> $GITHUB_ENV
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
