@@ -468,26 +468,28 @@ const BusinessAdvisory: React.FC = () => {
     // ─── STEP 0: LANDING ──────────────────────────────────────────────────────
     if (step === 0) {
         return (
-            <div className="p-8 max-w-7xl mx-auto flex items-center justify-center min-h-[80vh] relative">
-                <button
-                    onClick={() => navigate(-1)}
-                    className="absolute top-8 left-8 text-[#555555] font-bold hover:text-[#1B5E20] flex items-center gap-2 text-lg transition-colors cursor-pointer"
-                >
-                    <ArrowLeft className="w-5 h-5" /> {t.back}
-                </button>
-                <div className="text-center py-20 px-10 bg-white rounded-[48px] border border-[#E6E6E6] shadow-xl max-w-3xl w-full">
-                    <div className="w-24 h-24 bg-[#E8F5E9] rounded-full flex items-center justify-center mx-auto mb-8 shadow-sm">
-                        <Briefcase className="w-12 h-12 text-[#1B5E20]" />
+            <div className="p-4 md:p-8 max-w-7xl mx-auto flex flex-col items-center justify-center min-h-[80vh] gap-4">
+                <div className="self-start">
+                    <button
+                        onClick={() => navigate(-1)}
+                        className="text-[#555555] font-bold hover:text-[#1B5E20] flex items-center gap-2 text-base md:text-lg transition-colors cursor-pointer"
+                    >
+                        <ArrowLeft className="w-5 h-5" /> {t.back}
+                    </button>
+                </div>
+                <div className="text-center py-10 md:py-20 px-6 md:px-10 bg-white rounded-[32px] md:rounded-[48px] border border-[#E6E6E6] shadow-xl max-w-3xl w-full">
+                    <div className="w-16 h-16 md:w-24 md:h-24 bg-[#E8F5E9] rounded-full flex items-center justify-center mx-auto mb-6 md:mb-8 shadow-sm">
+                        <Briefcase className="w-8 h-8 md:w-12 md:h-12 text-[#1B5E20]" />
                     </div>
-                    <h1 className="text-4xl font-extrabold text-[#1E1E1E] mb-4">{t.businessAdvisorTitle}</h1>
-                    <p className="text-[#555555] font-medium text-lg max-w-xl mx-auto mb-10">
+                    <h1 className="text-2xl md:text-4xl font-extrabold text-[#1E1E1E] mb-4">{t.businessAdvisorTitle}</h1>
+                    <p className="text-[#555555] font-medium text-base md:text-lg max-w-xl mx-auto mb-8 md:mb-10">
                         {t.businessAdvisorSub}
                     </p>
                     <button
                         onClick={() => setStep(1)}
-                        className="px-8 py-4 bg-[#1B5E20] text-white rounded-2xl font-bold text-xl hover:bg-[#000D0F] transition-all shadow-lg hover:scale-105 flex items-center justify-center gap-3 mx-auto"
+                        className="px-6 md:px-8 py-3 md:py-4 bg-[#1B5E20] text-white rounded-2xl font-bold text-base md:text-xl hover:bg-[#000D0F] transition-all shadow-lg hover:scale-105 flex items-center justify-center gap-3 mx-auto"
                     >
-                        {t.startAssessment} <ArrowRight className="w-6 h-6" />
+                        {t.startAssessment} <ArrowRight className="w-5 h-5 md:w-6 md:h-6" />
                     </button>
                 </div>
             </div>
@@ -541,8 +543,8 @@ const BusinessAdvisory: React.FC = () => {
                     </div>
                 </div>
 
-                <div className="bg-white rounded-[40px] border border-[#E6E6E6] shadow-2xl p-6 md:p-12 animate-in fade-in slide-in-from-bottom-6 duration-700">
-                    <h1 className="text-4xl font-extrabold text-[#1E1E1E] mb-10 tracking-tight">
+                <div className="bg-white rounded-[32px] md:rounded-[40px] border border-[#E6E6E6] shadow-2xl p-5 md:p-12 animate-in fade-in slide-in-from-bottom-6 duration-700">
+                    <h1 className="text-2xl md:text-4xl font-extrabold text-[#1E1E1E] mb-6 md:mb-10 tracking-tight">
                         {subStep === 1 && t.advisory.steps.step1}
                         {subStep === 2 && t.advisory.steps.step2}
                         {subStep === 3 && t.advisory.steps.step3}
@@ -683,7 +685,7 @@ const BusinessAdvisory: React.FC = () => {
                             <div className="animate-in fade-in slide-in-from-right-4 duration-500 space-y-10">
                                 <div className="space-y-6">
                                     <label className="block text-lg font-bold text-[#1E1E1E]">{t.advisoryForm.locationLabel}</label>
-                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-10">
                                         {[
                                             { label: t.advisoryForm.spaceOptions.agri.label, sub: t.advisoryForm.spaceOptions.agri.sub, value: 'Agri', icon: Sprout },
                                             { label: t.advisoryForm.spaceOptions.nonAgri.label, sub: t.advisoryForm.spaceOptions.nonAgri.sub, value: 'Non-Agri', icon: Briefcase },
@@ -926,10 +928,10 @@ const BusinessAdvisory: React.FC = () => {
 
                     {/* Sub-step Controls (Only for steps before final) */}
                     {subStep < totalSubSteps && (
-                        <div className="mt-16 flex justify-end">
+                        <div className="mt-8 md:mt-16 flex justify-end">
                             <button
                                 onClick={handleNext}
-                                className="px-12 py-4 bg-[#1B5E20] text-white rounded-2xl font-bold text-lg hover:bg-[#000D0F] transition-all shadow-lg hover:shadow-[#1B5E20]/20 flex items-center gap-2 group"
+                                className="w-full md:w-auto px-8 md:px-12 py-4 bg-[#1B5E20] text-white rounded-2xl font-bold text-lg hover:bg-[#000D0F] transition-all shadow-lg hover:shadow-[#1B5E20]/20 flex items-center justify-center gap-2 group"
                             >
                                 {t.common.continue} <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                             </button>
@@ -957,8 +959,8 @@ const BusinessAdvisory: React.FC = () => {
                 </div>
 
                 {/* Title + Contact Expert side by side */}
-                <div className="flex items-center justify-between mb-10">
-                    <h1 className="text-3xl font-extrabold text-[#1E1E1E]">{t.recommendedBusinesses}</h1>
+                <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-3 mb-6 md:mb-10">
+                    <h1 className="text-2xl md:text-3xl font-extrabold text-[#1E1E1E]">{t.recommendedBusinesses}</h1>
                     <button
                         onClick={() => setShowExpertModal(true)}
                         className="flex items-center gap-2 px-5 py-2.5 bg-[#1B5E20] text-white rounded-xl font-bold text-sm hover:bg-[#000D0F] transition-all shadow-md hover:scale-105 active:scale-95 flex-shrink-0"

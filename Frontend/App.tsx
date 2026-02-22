@@ -353,8 +353,8 @@ const LoginFlow: React.FC<{ onLogin: (phone: string, password: string) => void; 
     <div className="h-screen w-screen flex flex-col md:flex-row">
       {/* Left Section - Login Form (Light Section) */}
       <div className="w-full md:w-1/2 flex-1 min-h-0 overflow-y-auto bg-[#F1F8E9]">
-        <div className="min-h-full flex items-center justify-center p-6 md:p-12">
-          <div className="w-full max-w-[480px] bg-white rounded-2xl shadow-lg p-8 md:p-10 border border-green-100">
+        <div className="min-h-full flex items-center justify-center p-4 md:p-12">
+          <div className="w-full max-w-[480px] bg-white rounded-2xl shadow-lg p-5 md:p-10 border border-green-100">
             <div className="mb-8 font-poppins">
               <h1 className="text-[32px] font-black text-[#1B5E20] mb-2">{t.login}</h1>
               <p className="text-gray-600 font-bold">{t.loginTitle}</p>
@@ -615,8 +615,8 @@ const SignupFlow: React.FC<{ onSignup: (p: UserProfile, password?: string) => vo
       </div>
 
       <div className="w-full md:w-1/2 flex-1 min-h-0 overflow-y-auto bg-[#F1F8E9]">
-        <div className="min-h-full flex items-center justify-center p-6 md:p-12">
-          <div className="w-full max-w-[540px] bg-white rounded-2xl shadow-lg p-8 md:p-10 border border-green-100 my-8">
+        <div className="min-h-full flex items-center justify-center p-4 md:p-12">
+          <div className="w-full max-w-[540px] bg-white rounded-2xl shadow-lg p-5 md:p-10 border border-green-100 my-4 md:my-8">
             <div className="mb-6">
               <h1 className="text-[32px] font-black text-[#1B5E20] mb-1">{t.signup}</h1>
               <p className="text-gray-500 font-bold uppercase tracking-widest text-xs">{t.signupFlow.step} {step} {t.signupFlow.of} 2</p>

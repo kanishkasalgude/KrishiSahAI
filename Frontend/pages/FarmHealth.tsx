@@ -213,7 +213,7 @@ const FarmHealth: React.FC = () => {
                                                                                 </div>
                                                                             </div>
 
-                                                                            <div className="grid grid-cols-2 gap-4 mb-5">
+                                                                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4 mb-5">
                                                                                 <div className="bg-gray-50/80 rounded-2xl p-4 border border-gray-100">
                                                                                     <p className="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-1.5 flex items-center gap-1.5">
                                                                                         <span className="w-2 h-2 rounded-full bg-emerald-400"></span> Quantity

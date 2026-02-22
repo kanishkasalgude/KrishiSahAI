@@ -754,7 +754,7 @@ const Chatbot: React.FC = () => {
                             onChange={(e) => setInput(e.target.value)}
                             onKeyDown={(e) => e.key === 'Enter' && handleSend()}
                             placeholder={t.chatPlaceholder}
-                            className="w-full p-4 pr-14 bg-[#FAFCFC] border-2 border-[#E0E6E6] focus:outline-none focus:border-deep-green focus:ring-0 transition-all font-medium placeholder:text-stone-400 text-[#002105]"
+                            className="w-full p-4 pr-28 bg-[#FAFCFC] border-2 border-[#E0E6E6] focus:outline-none focus:border-deep-green focus:ring-0 transition-all font-medium placeholder:text-stone-400 text-[#002105]"
                         />
 
                         {/* Mic Button */}

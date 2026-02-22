@@ -333,19 +333,19 @@ const WasteToValue: React.FC = () => {
                         </div>
                     )}
                     {view === 'input' && (
-                        <div className="flex-1 flex flex-col items-center justify-center p-8 text-center bg-white">
-                            <div className="w-full max-w-md">
-                                <button
-                                    onClick={() => navigate('/')}
-                                    className="absolute top-8 left-8 text-gray-600 hover:text-deep-green flex items-center gap-2 font-bold text-lg transition-colors"
-                                >
-                                    <ArrowLeft className="w-5 h-5" /> {t.back}
-                                </button>
-                                <div className="w-20 h-20 bg-light-green text-deep-green flex items-center justify-center mx-auto mb-6">
-                                    <Leaf className="w-10 h-10" />
+                        <div className="flex-1 flex flex-col items-start justify-center p-6 md:p-8 bg-white">
+                            <button
+                                onClick={() => navigate('/')}
+                                className="text-gray-600 hover:text-deep-green flex items-center gap-2 font-bold text-base transition-colors mb-6"
+                            >
+                                <ArrowLeft className="w-5 h-5" /> {t.back}
+                            </button>
+                            <div className="w-full max-w-md mx-auto">
+                                <div className="w-16 h-16 md:w-20 md:h-20 bg-light-green text-deep-green flex items-center justify-center mx-auto mb-6">
+                                    <Leaf className="w-8 h-8 md:w-10 md:h-10" />
                                 </div>
-                                <h2 className="text-2xl font-bold text-deep-green mb-4 uppercase">Manual Waste Input</h2>
-                                <p className="text-gray-600 mb-8">Describe your farm waste to find valuable uses.</p>
+                                <h2 className="text-xl md:text-2xl font-bold text-deep-green mb-4 uppercase text-center">Manual Waste Input</h2>
+                                <p className="text-gray-600 mb-8 text-center">Describe your farm waste to find valuable uses.</p>
 
                                 <form onSubmit={handleAnalyze} className="space-y-6">
                                     <div className="relative">
@@ -605,7 +605,7 @@ const WasteToValue: React.FC = () => {
                     onClick={() => setSelectedOption(null)}
                 >
                     <div
-                        className="bg-white w-full max-w-4xl max-h-[90vh] rounded-[2rem] shadow-2xl border border-[#E6E6E6] overflow-hidden flex flex-col"
+                        className="bg-white w-full max-w-4xl max-h-[90vh] mx-2 rounded-[2rem] shadow-2xl border border-[#E6E6E6] overflow-hidden flex flex-col"
                         onClick={(e) => e.stopPropagation()}
                     >
                         {/* Modal Header */}
