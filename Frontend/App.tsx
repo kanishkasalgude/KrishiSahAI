@@ -911,7 +911,7 @@ const AppContent: React.FC = () => {
 
 
             // Mandatory Language Sync: If user has a preference, sync it global state
-            if (profile.language && profile.language !== language) {
+            if (profile.language) {
               setLanguage(profile.language);
             }
           }

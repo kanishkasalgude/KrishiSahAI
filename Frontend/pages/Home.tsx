@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { ArrowRight, Recycle, Briefcase, Loader2, Target, Activity, ShieldCheck, TrendingUp, CheckCircle, AlertTriangle } from 'lucide-react';
 import { useFarm } from '../src/context/FarmContext';
 import { api } from '../src/services/api';
-import { getLocalizedValue } from '../src/utils/localizationUtils';
+import { getLocalizedValue, normalizeValue } from '../src/utils/localizationUtils';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { auth, db } from '../firebase';
@@ -39,10 +39,10 @@ const Home: React.FC = () => {
     // Initial crop selection
     useEffect(() => {
         if (activeFarm?.crops && activeFarm.crops.length > 0) {
-            const uniqueCrops = [...new Set(activeFarm.crops)];
+            const uniqueNormalizedCrops = [...new Set(activeFarm.crops.map(c => normalizeValue(c, 'crops')))];
             // If the selected crop is not in the active farm's crops (or hasn't been set), select the first one
-            if (!selectedCrop || !uniqueCrops.includes(selectedCrop)) {
-                setSelectedCrop(uniqueCrops[0]);
+            if (!selectedCrop || !uniqueNormalizedCrops.includes(selectedCrop)) {
+                setSelectedCrop(uniqueNormalizedCrops[0]);
             }
         } else {
             setSelectedCrop(null);
@@ -153,7 +153,7 @@ const Home: React.FC = () => {
                     <span className="opacity-70 uppercase tracking-widest text-[10px] md:text-xs shrink-0">{t.currentCrop || 'Current Crop:'}</span>
                     {activeFarm?.crops?.length ? (
                         <div className="flex gap-1 bg-black/20 rounded-full p-1 border border-black/10 overflow-x-auto scrollbar-none flex-nowrap min-w-0" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-                            {[...new Set(activeFarm.crops)].map((crop) => (
+                            {[...new Set(activeFarm.crops.map(c => normalizeValue(c, 'crops')))].map((crop) => (
                                 <button
                                     key={crop}
                                     onClick={() => setSelectedCrop(crop)}
