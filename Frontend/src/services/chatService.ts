@@ -226,7 +226,6 @@ export const chatService = {
             const chatDocRef = doc(db, USERS_COLLECTION, userId, CHATS_COLLECTION, chatId);
             await deleteDoc(chatDocRef);
 
-            console.log(`Successfully deleted chat ${chatId} and ${messagesSnapshot.docs.length} messages`);
             return true;
         } catch (error) {
             console.error("Error deleting chat:", error);

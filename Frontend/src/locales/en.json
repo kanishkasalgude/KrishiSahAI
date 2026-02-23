@@ -809,5 +809,23 @@
             "connect": "Connect With Agri Experts",
             "verified": "Verified farming & agri-business specialists"
         }
-    }
+    },
+    "home": {
+        "criticalFocus": "Critical Focus",
+        "requiredActions": "Required Actions",
+        "noCropError": "No crop found in your active farm. Please add a crop in your profile.",
+        "failedToGenerate": "Failed to generate crop plan. Please try again.",
+        "fetchingPlan": "Fetching Smart Crop Plan..."
+    },
+    "chatbot": {
+        "askAI": "Ask AI",
+        "askSubtitle": "Ask about crop diseases, market prices, or farming techniques.",
+        "doYouKnow": "Do You Know?",
+        "thinking": "Thinking",
+        "errorConnect": "Error: Could not connect to AI. Please try again.",
+        "errorSession": "Error: Failed to initialize AI session. Please refresh the page.",
+        "makingPlan": "Making 10-year plan for",
+        "analyzingMarket": "Analyzing market trends and regional data."
+    },
+    "history": "History"
 }

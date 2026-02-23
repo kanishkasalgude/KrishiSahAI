@@ -1,11 +1,14 @@
 
-
 from flask import Flask, jsonify, request, Response
 from flask_cors import CORS
 from flask_talisman import Talisman
 from dotenv import load_dotenv
 import os
 import sys
+import uuid
+import json
+import asyncio
+import traceback
 from pathlib import Path
 import warnings
 
@@ -27,8 +30,6 @@ from services.NotificationService.notification_engine import notification_engine
 from flask_apscheduler import APScheduler
 from werkzeug.utils import secure_filename
 import pandas as pd
-import json
-import uuid
 from datetime import datetime
 from middleware.auth import init_firebase, require_auth
 import firebase_admin
@@ -71,13 +72,7 @@ def ping():
 
 @app.before_request
 def log_request():
-    try:
-        msg = f"Incoming: {request.method} {request.url}\n"
-        print(msg.strip())
-        with open("app_debug.log", "a", encoding='utf-8') as f:
-            f.write(msg)
-    except:
-        pass
+    print(f"Incoming: {request.method} {request.url}")
 
 # CORS Configuration - Must be set BEFORE Talisman
 # In development, allow all origins so phone/emulator can access the API
@@ -436,7 +431,6 @@ def init_advisor():
             farm_name=data.get('farm_name')
         )
         
-        import uuid
         session_id = str(uuid.uuid4())
         advisor = KrishiSahAIAdvisor(profile)
         advisor_sessions[session_id] = advisor
@@ -500,22 +494,14 @@ def chat_advisor_stream():
             
         advisor = advisor_sessions[session_id]
         print(f"[ADVISOR] Stream Chat -> Input: \"{message[:50]}...\"")
-        with open("debug.log", "a", encoding='utf-8') as f:
-            f.write(f"Stream initiated for session {session_id}\n")
-        
+
         def generate():
             try:
-                for i, chunk in enumerate(advisor.stream_chat(message, language=data.get('language'))):
-                    if i == 0:
-                        with open("debug.log", "a", encoding='utf-8') as f:
-                            f.write(f"First chunk yielded for session {session_id}\n")
+                for chunk in advisor.stream_chat(message, language=data.get('language')):
                     yield f"data: {json.dumps({'chunk': chunk})}\n\n"
-                with open("debug.log", "a", encoding='utf-8') as f:
-                    f.write(f"Stream completed for session {session_id}\n")
+                print(f"[ADVISOR] Stream completed for session {session_id[:8]}...")
             except Exception as e:
                 print(f"[ADVISOR] Generator Error: {e}")
-                with open("debug.log", "a", encoding='utf-8') as f:
-                    f.write(f"Generator Error: {e}\n")
                 yield f"data: {json.dumps({'error': str(e)})}\n\n"
         
         response = Response(generate(), mimetype='text/event-stream')
@@ -1091,9 +1077,6 @@ def get_notifications():
 def trigger_notifications():
     try:
         user_id = request.user.get('uid')
-        print(f"[DEBUG] /api/notifications/trigger reached for {user_id}")
-        with open("d:/Projects/KrishiSahAI TechFiesta/app_debug.log", "a") as f:
-            f.write(f"[DEBUG] Trigger path called for {user_id}\n")
         print(f"[NOTIF] Manual trigger initiated for {user_id}")
         
         import asyncio
@@ -1107,12 +1090,8 @@ def trigger_notifications():
 
 
 if __name__ == '__main__':
-    print("Starting server with ALL components...")
+    print("Starting KrishiSahAI backend server...")
     port = int(os.environ.get('PORT', 5000))
-    # app.run(debug=True, host='0.0.0.0', port=port) # threaded=True by default
-    # Turn off debug mode in production or if using APScheduler with reloader issues
-    app.run(debug=True, host='0.0.0.0', port=port, use_reloader=True)
-    print("\n=== Registered Routes ===")
-    for rule in app.url_map.iter_rules():
-        print(f"{rule.endpoint}: {rule.rule} {list(rule.methods)}")
-    print("=========================\n")
+    # Set debug=False in production. In development, FLASK_ENV=development enables helpful errors.
+    debug_mode = os.getenv('FLASK_ENV') == 'development'
+    app.run(debug=debug_mode, host='0.0.0.0', port=port, use_reloader=debug_mode)

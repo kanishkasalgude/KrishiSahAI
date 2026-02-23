@@ -263,9 +263,7 @@ const WasteToValue: React.FC = () => {
     };
 
     const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-        // Placeholder for image upload logic
-        console.log("Image uploaded:", e.target.files?.[0]);
-        // For now, just switch to input view
+        // Placeholder for image upload logic - switches to manual input
         setView('input');
     };
 

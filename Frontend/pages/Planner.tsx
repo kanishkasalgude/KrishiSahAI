@@ -47,7 +47,7 @@ const Planner: React.FC = () => {
     useEffect(() => {
         const fetchCropRoadmap = async () => {
             if (!activeFarm?.crops || activeFarm.crops.length === 0) {
-                setError("No crop found in your active farm. Please add a crop to use the planner.");
+                setError(t.home?.noCropError || "No crop found in your active farm. Please add a crop to use the planner.");
                 setLoading(false);
                 return;
             }
@@ -166,13 +166,13 @@ const Planner: React.FC = () => {
         return (
             <div className="flex flex-col items-center justify-center min-h-screen p-8 text-center">
                 <AlertTriangle className="w-16 h-16 text-yellow-500 mb-4" />
-                <h2 className="text-2xl font-bold text-[#1E1E1E] mb-2">Planner Error</h2>
+                <h2 className="text-2xl font-bold text-[#1E1E1E] mb-2">{t.analysisFailed || 'Planner Error'}</h2>
                 <p className="text-gray-500 mb-6 max-w-md">{error}</p>
                 <button
                     onClick={() => navigate('/')}
                     className="px-6 py-3 bg-[#1B5E20] text-white rounded-xl font-bold hover:bg-green-800 transition-all"
                 >
-                    Return Home
+                    {t.backToHome || 'Return Home'}
                 </button>
             </div>
         );
@@ -282,12 +282,12 @@ const Planner: React.FC = () => {
 
                                             <div className="space-y-4">
                                                 <div>
-                                                    <h4 className="text-xs font-bold text-[#1B5E20] uppercase tracking-widest mb-1">Critical Focus</h4>
+                                                    <h4 className="text-xs font-bold text-[#1B5E20] uppercase tracking-widest mb-1">{t.home?.criticalFocus || 'Critical Focus'}</h4>
                                                     <p className="text-[#333] font-bold text-lg">{year.focus}</p>
                                                 </div>
 
                                                 <div>
-                                                    <h4 className="text-xs font-bold text-[#1B5E20] uppercase tracking-widest mb-2">Required Actions</h4>
+                                                    <h4 className="text-xs font-bold text-[#1B5E20] uppercase tracking-widest mb-2">{t.home?.requiredActions || 'Required Actions'}</h4>
                                                     <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
                                                         {year.actions?.map((action, aIdx) => (
                                                             <li key={aIdx} className="flex items-center gap-3 bg-gray-50 p-3 rounded-xl border border-gray-100">

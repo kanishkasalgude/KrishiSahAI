@@ -317,9 +317,7 @@ const Chatbot: React.FC = () => {
 
     const initBackendSession = async () => {
         try {
-            console.log("[Chatbot] Initializing backend session for user:", user.uid);
             const profile = await getUserProfile(user.uid) as any;
-            console.log("[Chatbot] User profile loaded:", profile);
 
             const data = await api.post('/business-advisor/init', {
                 name: profile?.name || "Farmer",
@@ -336,10 +334,7 @@ const Chatbot: React.FC = () => {
                 ...profile
             });
 
-            console.log("[Chatbot] Init response:", data);
-
             if (data.success && data.session_id) {
-                console.log("[Chatbot] Backend session initialized:", data.session_id);
                 return data.session_id;
             } else {
                 console.error("[Chatbot] Init returned success=false or no session_id");
@@ -451,7 +446,6 @@ const Chatbot: React.FC = () => {
                 return;
             }
 
-            console.log("[Chatbot] Streaming with session ID:", currentBackendId);
             pickRandomFact();
             setMessages(prev => [...prev, { role: 'assistant', content: '', createdAt: new Date() }]);
 
@@ -500,7 +494,6 @@ const Chatbot: React.FC = () => {
 
 
                                 if (currentBackendId) {
-                                    console.log("[Chatbot] Session reinitialized, retrying stream...");
                                     // Retry the stream
                                     await attemptStream();
                                 } else {
@@ -625,7 +618,7 @@ const Chatbot: React.FC = () => {
                             <Menu className="w-6 h-6 text-[#002105]" />
                         </button>
                         <h1 className="text-lg font-bold text-[#002105]">
-                            {location.state?.isRoadmapPlanner ? `Making 10 year plan for ${location.state?.businessName}...` : 'Ask AI'}
+                            {location.state?.isRoadmapPlanner ? `${t.chatbot?.makingPlan || 'Making 10-year plan for'} ${location.state?.businessName}...` : (t.chatbot?.askAI || 'Ask AI')}
                         </h1>
                     </div>
                 )}
@@ -641,8 +634,8 @@ const Chatbot: React.FC = () => {
                             <div className="w-24 h-24 bg-[#FAFCFC] rounded-[32px] flex items-center justify-center mb-6">
                                 <Bot className="w-12 h-12 text-[#1B5E20]" />
                             </div>
-                            <h2 className="text-2xl font-bold text-[#002105] mb-2">{'Ask AI'}</h2>
-                            <p className="max-w-xs mx-auto text-[#6B7878]">Ask about crop diseases, market prices, or farming techniques.</p>
+                            <h2 className="text-2xl font-bold text-[#002105] mb-2">{t.chatbot?.askAI || 'Ask AI'}</h2>
+                            <p className="max-w-xs mx-auto text-[#6B7878]">{t.chatbot?.askSubtitle || 'Ask about crop diseases, market prices, or farming techniques.'}</p>
                         </div>
                     ) : (
                         messages.map((msg, idx) => (
@@ -664,7 +657,7 @@ const Chatbot: React.FC = () => {
                                     {msg.role === 'assistant' && msg.content === '' && currentFact ? (
                                         <div className="bg-gradient-to-br from-[#1B5E20] to-[#2E7D32] text-white rounded-[24px] rounded-tl-sm p-6 shadow-lg w-[260px] sm:w-[320px] md:w-[400px]">
                                             <div className="flex items-center gap-2 mb-3">
-                                                <span className="text-xs font-black uppercase tracking-[0.2em] text-green-200">Do You Know?</span>
+                                                <span className="text-xs font-black uppercase tracking-[0.2em] text-green-200">{t.chatbot?.doYouKnow || 'Do You Know?'}</span>
                                             </div>
                                             <p className="text-sm leading-relaxed text-white/95 mb-4 font-medium">
                                                 {currentFact.fact}
@@ -676,7 +669,7 @@ const Chatbot: React.FC = () => {
                                                     <span className="w-1.5 h-1.5 bg-green-300 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></span>
                                                 </div>
                                                 <span className="text-xs text-green-200 font-bold tracking-widest flex items-center">
-                                                    Thinking<span className="thinking-dots min-w-[20px]"></span>
+                                                    {t.chatbot?.thinking || 'Thinking'}<span className="thinking-dots min-w-[20px]"></span>
                                                 </span>
                                             </div>
                                         </div>
@@ -741,9 +734,9 @@ const Chatbot: React.FC = () => {
                                 <Bot className="w-8 h-8 text-deep-green" />
                             </div>
                             <h3 className="text-xl font-bold text-deep-green">
-                                Making 10 year plan for {location.state?.businessName}...
+                                {t.chatbot?.makingPlan || 'Making 10-year plan for'} {location.state?.businessName}...
                             </h3>
-                            <p className="text-stone-500 mt-2">Analyzing market trends and regional data.</p>
+                            <p className="text-stone-500 mt-2">{t.chatbot?.analyzingMarket || 'Analyzing market trends and regional data.'}</p>
                         </div>
                     )}
 
@@ -785,7 +778,7 @@ const Chatbot: React.FC = () => {
                         </button>
                     </div>
                     <p className="text-center text-[10px] uppercase font-bold tracking-widest text-stone-400 mt-3">
-                        AI can make mistakes. Verify important info.
+                        {t.aiDisclaimer}
                     </p>
                 </div>
             </ChatLayout >

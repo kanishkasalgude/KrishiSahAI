@@ -230,12 +230,12 @@ const Home: React.FC = () => {
 
                                                 <div className="space-y-5">
                                                     <div>
-                                                        <h4 className="text-xs font-black text-[#1B5E20] uppercase tracking-widest mb-2 opacity-80">Critical Focus</h4>
+                                                        <h4 className="text-xs font-black text-[#1B5E20] uppercase tracking-widest mb-2 opacity-80">{t.home?.criticalFocus || 'Critical Focus'}</h4>
                                                         <p className="text-[#333] font-bold text-lg md:text-xl leading-snug">{year.focus}</p>
                                                     </div>
 
                                                     <div>
-                                                        <h4 className="text-xs font-black text-[#1B5E20] uppercase tracking-widest mb-3 opacity-80">Required Actions</h4>
+                                                        <h4 className="text-xs font-black text-[#1B5E20] uppercase tracking-widest mb-3 opacity-80">{t.home?.requiredActions || 'Required Actions'}</h4>
                                                         <ul className="grid grid-cols-1 gap-3">
                                                             {year.actions?.filter(action => action.replace(/[^a-zA-Z0-9]/g, '').trim() !== '').map((action, aIdx) => (
                                                                 <li key={aIdx} className="flex items-start gap-3 bg-gray-50/50 p-3 rounded-xl border border-gray-100">
