@@ -1,4 +1,4 @@
-# KrishiSahAI Advisory — Installation and Setup Guide
+﻿# KrishiSahAI Advisory: Installation and Setup Guide
 
 This guide covers the complete process for setting up KrishiSahAI Advisory from a fresh repository clone through a fully operational local development environment. Follow each section in order.
 
@@ -42,7 +42,7 @@ This guide covers the complete process for setting up KrishiSahAI Advisory from 
 ### 1.3 System Requirements
 
 **Minimum (Development):**
-- RAM: 8 GB (16 GB recommended — TensorFlow and YOLO v8 are memory-intensive)
+- RAM: 8 GB (16 GB recommended, TensorFlow and YOLO v8 are memory-intensive)
 - CPU: 4 cores
 - Storage: 10 GB free (for Python virtual environment, Node modules, and ML model weights)
 - OS: Windows 10/11, macOS 12+, or Ubuntu 20.04+
@@ -56,9 +56,9 @@ This guide covers the complete process for setting up KrishiSahAI Advisory from 
 
 You will need the following before proceeding:
 
-- **Firebase Service Account JSON** — Downloaded from Firebase Console
-- **WeatherAPI Key** — Free tier provides 1 million calls/month
-- **GNews API Key** — Free tier provides 100 calls/day
+- **Firebase Service Account JSON**, Downloaded from Firebase Console
+- **WeatherAPI Key**, Free tier provides 1 million calls/month
+- **GNews API Key**, Free tier provides 100 calls/day
 
 ---
 
@@ -246,7 +246,7 @@ VITE_FIREBASE_MEASUREMENT_ID=G-XXXXXXXXXX
 VITE_API_URL=http://localhost:5000/api
 ```
 
-> **Note:** All `VITE_` prefixed variables are embedded into the JavaScript bundle at build time. Never put secret keys in `VITE_` variables. Firebase configuration values are intended to be public — access control is enforced by Firebase Security Rules.
+> **Note:** All `VITE_` prefixed variables are embedded into the JavaScript bundle at build time. Never put secret keys in `VITE_` variables. Firebase configuration values are intended to be public, access control is enforced by Firebase Security Rules.
 
 ### 4.4 Run the Development Server
 
@@ -262,7 +262,7 @@ The Vite development server starts at:
   Network: http://YOUR_IP:5173/
 ```
 
-Open `http://localhost:5173` in your browser. Hot Module Replacement (HMR) is enabled — changes to source files update the browser instantly.
+Open `http://localhost:5173` in your browser. Hot Module Replacement (HMR) is enabled, changes to source files update the browser instantly.
 
 ### 4.5 Production Build
 
@@ -367,7 +367,7 @@ sudo apt install ffmpeg
 
 ### 5.5 gTTS
 
-gTTS requires an active internet connection — it calls Google's text-to-speech API. No model download is required. It is installed via `requirements.txt`.
+gTTS requires an active internet connection, it calls Google's text-to-speech API. No model download is required. It is installed via `requirements.txt`.
 
 ---
 
@@ -377,13 +377,13 @@ gTTS requires an active internet connection — it calls Google's text-to-speech
 
 | Variable | Required | Default | Description |
 |----------|----------|---------|-------------|
-| `FIREBASE_CREDENTIALS_PATH` | Yes | — | Relative or absolute path to Firebase service account JSON file |
-| `GOOGLE_CLOUD_PROJECT` | Yes | — | Firebase project ID (e.g., `krishiai-58578`) |
+| `FIREBASE_CREDENTIALS_PATH` | Yes | N/A | Relative or absolute path to Firebase service account JSON file |
+| `GOOGLE_CLOUD_PROJECT` | Yes | N/A | Firebase project ID (e.g., `krishiai-58578`) |
 | `OLLAMA_BASE_URL` | Yes | `http://localhost:11434` | Base URL of the running Ollama instance |
 | `OLLAMA_HOST` | No | Same as `OLLAMA_BASE_URL` | Alternate Ollama host setting |
 | `OLLAMA_MODEL` | Yes | `llama3.2` | Name of the Ollama model to use for all LLM inference |
-| `WEATHER_API_KEY` | Yes | — | API key from weatherapi.com |
-| `GNEWS_API_KEY` | Yes | — | API key from gnews.io |
+| `WEATHER_API_KEY` | Yes | N/A | API key from weatherapi.com |
+| `GNEWS_API_KEY` | Yes | N/A | API key from gnews.io |
 | `FLASK_ENV` | Yes | `production` | Set to `development` for debug mode and relaxed CORS |
 | `DISABLE_AUTH` | No | `false` | Set to `true` to bypass Firebase token verification in development |
 | `ALLOWED_ORIGINS` | Yes (prod) | `http://localhost:5173` | Comma-separated list of allowed CORS origins for production |
@@ -393,13 +393,13 @@ gTTS requires an active internet connection — it calls Google's text-to-speech
 
 | Variable | Required | Default | Description |
 |----------|----------|---------|-------------|
-| `VITE_FIREBASE_API_KEY` | Yes | — | Firebase Web API key (public) |
-| `VITE_FIREBASE_AUTH_DOMAIN` | Yes | — | Firebase auth domain (e.g., `project-id.firebaseapp.com`) |
-| `VITE_FIREBASE_PROJECT_ID` | Yes | — | Firebase project ID |
-| `VITE_FIREBASE_STORAGE_BUCKET` | Yes | — | Firebase storage bucket domain |
-| `VITE_FIREBASE_MESSAGING_SENDER_ID` | Yes | — | Firebase cloud messaging sender ID |
-| `VITE_FIREBASE_APP_ID` | Yes | — | Firebase web app ID |
-| `VITE_FIREBASE_MEASUREMENT_ID` | No | — | Firebase Analytics measurement ID |
+| `VITE_FIREBASE_API_KEY` | Yes | N/A | Firebase Web API key (public) |
+| `VITE_FIREBASE_AUTH_DOMAIN` | Yes | N/A | Firebase auth domain (e.g., `project-id.firebaseapp.com`) |
+| `VITE_FIREBASE_PROJECT_ID` | Yes | N/A | Firebase project ID |
+| `VITE_FIREBASE_STORAGE_BUCKET` | Yes | N/A | Firebase storage bucket domain |
+| `VITE_FIREBASE_MESSAGING_SENDER_ID` | Yes | N/A | Firebase cloud messaging sender ID |
+| `VITE_FIREBASE_APP_ID` | Yes | N/A | Firebase web app ID |
+| `VITE_FIREBASE_MEASUREMENT_ID` | No | N/A | Firebase Analytics measurement ID |
 | `VITE_API_URL` | Yes | `http://localhost:5000/api` | Full base URL of the Flask backend API |
 
 ### 6.3 Access from Mobile Devices or Emulators
@@ -474,7 +474,7 @@ service cloud.firestore {
 
 ## 8. Production Deployment Guide
 
-### 8.1 Frontend — Firebase Hosting
+### 8.1 Frontend: Firebase Hosting
 
 **Install Firebase CLI:**
 ```bash
@@ -503,7 +503,7 @@ The frontend is now served at `https://your-project-id.web.app`.
 
 ---
 
-### 8.2 Backend — Production Considerations
+### 8.2 Backend: Production Considerations
 
 **Environment changes for production:**
 
@@ -575,7 +575,7 @@ Set `OLLAMA_BASE_URL` to the Ollama instance's internal IP or hostname in the pr
 
 A GitHub Actions workflow is included for automated APK generation using Bubblewrap (Trusted Web Activity).
 
-### 9.1 Automated — GitHub Actions (Recommended)
+### 9.1 Automated: GitHub Actions (Recommended)
 
 1. Push your code to your GitHub repository.
 2. Navigate to the **Actions** tab.
@@ -608,7 +608,7 @@ base64 release.keystore
 [Convert]::ToBase64String([IO.File]::ReadAllBytes("release.keystore"))
 ```
 
-### 9.2 Manual — Local Build
+### 9.2 Manual: Local Build
 
 **Prerequisites:**
 - JDK 11 or 17 installed
@@ -643,7 +643,7 @@ Transfer `app-release-signed.apk` to your Android device and install.
 
 ---
 
-**Problem:** Disease model not loading — `FileNotFoundError: plant_disease_model.h5`  
+**Problem:** Disease model not loading, `FileNotFoundError: plant_disease_model.h5`  
 **Solution:** The model weights file is not present. Place the trained `plant_disease_model.h5` file in `Backend/services/DiseaseDetector/`.
 
 ---
@@ -653,7 +653,7 @@ Transfer `app-release-signed.apk` to your Android device and install.
 
 ---
 
-**Problem:** Voice STT fails — `ffmpeg not found`  
+**Problem:** Voice STT fails, `ffmpeg not found`  
 **Solution:** Whisper requires `ffmpeg`. Install it for your OS (see Section 5.4) and ensure it is in the system PATH. Restart the terminal after installation.
 
 ---
@@ -720,8 +720,8 @@ Transfer `app-release-signed.apk` to your Android device and install.
 ---
 
 **Problem:** High memory usage on startup  
-**Solution:** Both TensorFlow (disease model) and YOLO v8 (pest model) are lazy-loaded — they only consume memory after the first respective inference request. If memory is still insufficient, avoid loading both models simultaneously by ensuring test requests are sequential.
+**Solution:** Both TensorFlow (disease model) and YOLO v8 (pest model) are lazy-loaded, they only consume memory after the first respective inference request. If memory is still insufficient, avoid loading both models simultaneously by ensuring test requests are sequential.
 
 ---
 
-*End of INSTALLATION.md — KrishiSahAI Advisory Setup Guide*
+*End of INSTALLATION.md, KrishiSahAI Advisory Setup Guide*

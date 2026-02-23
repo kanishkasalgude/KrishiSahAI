@@ -1,4 +1,4 @@
-<p align="center">
+﻿<p align="center">
   <img src="./Logo/KrishiSahAI.png" width="120" alt="KrishiSahAI Logo" />
 </p>
 
@@ -16,7 +16,7 @@
 
 ---
 
-KrishiSahAI Advisory is an end-to-end intelligent agricultural platform that brings together generative AI, computer vision, real-time environmental data, and multilingual voice interaction into a single cohesive system. It is designed to serve every Indian farmer — from the smallholder with a single acre to the progressive agripreneur scaling toward mechanized enterprise.
+KrishiSahAI Advisory is an end-to-end intelligent agricultural platform that brings together generative AI, computer vision, real-time environmental data, and multilingual voice interaction into a single cohesive system. It is designed to serve every Indian farmer, from the smallholder with a single acre to the progressive agripreneur scaling toward mechanized enterprise.
 
 The platform transforms the farmhouse into a data-driven operation by generating strategic business roadmaps, diagnosing crop diseases through image recognition, detecting pests with real-time object detection, and converting agricultural waste into identified revenue streams. All capabilities are accessible in English, Hindi, and Marathi through both text and voice.
 
@@ -30,7 +30,7 @@ Indian agriculture sustains over 700 million people yet remains one of the most 
 
 **Delayed disease and pest response.** Crop loss due to undetected disease and pest infestation amounts to an estimated 15–25% of annual yield nationally. Laboratory diagnosis and expert consultation are geographically and financially inaccessible for most farmers.
 
-**Wasted agricultural residue.** Post-harvest residue — stalks, husks, and stems — is routinely burned, contributing to air pollution and representing a destroyed secondary income source. Farmers lack the knowledge to convert this waste into compostable material, biofuel, or industrial inputs.
+**Wasted agricultural residue.** Post-harvest residue, stalks, husks, and stems, is routinely burned, contributing to air pollution and representing a destroyed secondary income source. Farmers lack the knowledge to convert this waste into compostable material, biofuel, or industrial inputs.
 
 **Digital and literacy barriers.** Existing agri-tech platforms are English-first, text-heavy, and require reliable internet and modern hardware. They are built for an agronomist, not a farmer standing in a field.
 
@@ -54,7 +54,7 @@ The platform is built for India's farmers while being architecturally production
 
 Contextual AI strategy generation grounded in the farmer's actual profile.
 
-The engine accepts a comprehensive farmer profile — land size, soil type, water availability, capital, skills, market access, and risk preference — and generates a ranked list of viable agri-business ventures with projected ROI timelines. Each recommendation includes a multi-year strategic roadmap broken into four executable phases. The advisor maintains full conversational memory across sessions, allowing farmers to refine plans through dialogue. Responses are generated in the farmer's preferred language without any language blending.
+The engine accepts a comprehensive farmer profile, land size, soil type, water availability, capital, skills, market access, and risk preference, and generates a ranked list of viable agri-business ventures with projected ROI timelines. Each recommendation includes a multi-year strategic roadmap broken into four executable phases. The advisor maintains full conversational memory across sessions, allowing farmers to refine plans through dialogue. Responses are generated in the farmer's preferred language without any language blending.
 
 ---
 
@@ -70,7 +70,7 @@ A multi-class convolutional neural network trained on the PlantVillage dataset c
 
 Real-time object detection for destructive agricultural pests.
 
-Powered by YOLO v8, this module identifies common agricultural pests — including the Rice Leaf Roller, Brown Planthopper, and others — directly from field photographs. The model maps neural network integer outputs to a human-readable pest registry and returns a confidence score, a severity classification, and a contextual description. Like the disease pipeline, images are automatically discarded post-inference.
+Powered by YOLO v8, this module identifies common agricultural pests, including the Rice Leaf Roller, Brown Planthopper, and others, directly from field photographs. The model maps neural network integer outputs to a human-readable pest registry and returns a confidence score, a severity classification, and a contextual description. Like the disease pipeline, images are automatically discarded post-inference.
 
 ---
 
@@ -78,7 +78,7 @@ Powered by YOLO v8, this module identifies common agricultural pests — includi
 
 A persistent, language-aware, streaming conversational advisor.
 
-Built on LangChain with state managed through conversation buffer memory, the chatbot operates over both standard and Server-Sent Event streaming connections. It enforces language purity through system-level prompt engineering — a technique internally called the Iron Curtain strategy — ensuring Hindi and Marathi responses do not include English fallbacks. Conversation titles are AI-generated based on the session content, and sessions are identified by UUID for stateless server-side management.
+Built on LangChain with state managed through conversation buffer memory, the chatbot operates over both standard and Server-Sent Event streaming connections. It enforces language purity through system-level prompt engineering, a technique internally called the Iron Curtain strategy, ensuring Hindi and Marathi responses do not include English fallbacks. Conversation titles are AI-generated based on the session content, and sessions are identified by UUID for stateless server-side management.
 
 ---
 
@@ -118,7 +118,7 @@ The news service constructs targeted boolean queries combining crop names, distr
 
 A background scheduler that generates AI-powered alerts without user initiation.
 
-Running as a cron-scheduled APScheduler task every 30 minutes, the notification engine combines weather trigger rules, news keyword matching, and farmer profile data to generate contextual alerts. Trigger thresholds are deterministic — a predicted rainfall probability exceeding 70% triggers a high-priority weather alert regardless of LLM output — ensuring critical safety information is never silently suppressed.
+Running as a cron-scheduled APScheduler task every 30 minutes, the notification engine combines weather trigger rules, news keyword matching, and farmer profile data to generate contextual alerts. Trigger thresholds are deterministic, a predicted rainfall probability exceeding 70% triggers a high-priority weather alert regardless of LLM output, ensuring critical safety information is never silently suppressed.
 
 ---
 
@@ -140,7 +140,7 @@ Using ReportLab, the system can render completed advisory sessions, roadmaps, an
 
 ## System Overview
 
-KrishiSahAI is architected as a strict client-server system using a Separation of Concerns design. The React 19 + TypeScript frontend communicates exclusively through a centralized Flask REST API gateway. All AI inference — whether LangChain-based text generation, TensorFlow image classification, or YOLO object detection — executes within dedicated Python service modules on the backend. Firebase handles both authentication and structured data persistence via Firestore. Ollama provides low-latency, privacy-preserving local LLM execution, with Google Gemini available as a cloud fallback.
+KrishiSahAI is architected as a strict client-server system using a Separation of Concerns design. The React 19 + TypeScript frontend communicates exclusively through a centralized Flask REST API gateway. All AI inference, whether LangChain-based text generation, TensorFlow image classification, or YOLO object detection, executes within dedicated Python service modules on the backend. Firebase handles both authentication and structured data persistence via Firestore. Ollama provides low-latency, privacy-preserving local LLM execution, with Google Gemini available as a cloud fallback.
 
 The complete technical architecture, module-level logic, database schema, API specification, and ML pipeline documentation are available in the detailed reference:
 
@@ -150,9 +150,9 @@ The complete technical architecture, module-level logic, database schema, API sp
 
 ## Scalability and Production Readiness
 
-The API layer is fully stateless with respect to persistent data — session state is UUID-keyed in memory or persisted to Firestore. All services are independently deployable Python modules with no circular dependencies at the routing layer. CORS is environment-aware, enforcing strict origin whitelisting in production while permitting wildcard access during development. The Flask server is Talisman-compatible for HTTP security header enforcement in production. The frontend is Firebase Hosting-deployed as a static production bundle with environment-separated configuration.
+The API layer is fully stateless with respect to persistent data, session state is UUID-keyed in memory or persisted to Firestore. All services are independently deployable Python modules with no circular dependencies at the routing layer. CORS is environment-aware, enforcing strict origin whitelisting in production while permitting wildcard access during development. The Flask server is Talisman-compatible for HTTP security header enforcement in production. The frontend is Firebase Hosting-deployed as a static production bundle with environment-separated configuration.
 
-The modular service architecture allows individual components — the disease detector, pest detector, business advisor, or any other module — to be extracted, containerized, and deployed as independent microservices without restructuring the API contract.
+The modular service architecture allows individual components, the disease detector, pest detector, business advisor, or any other module, to be extracted, containerized, and deployed as independent microservices without restructuring the API contract.
 
 ---
 

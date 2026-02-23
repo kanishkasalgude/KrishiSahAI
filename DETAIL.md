@@ -1,4 +1,4 @@
-# KrishiSahAI Advisory — Detailed Technical Documentation
+﻿# KrishiSahAI Advisory: Detailed Technical Documentation
 
 This document is the authoritative internal engineering reference for the KrishiSahAI Advisory platform. It covers system architecture, feature-level logic, API specifications, database schemas, AI/ML pipeline internals, security design, performance strategy, and the long-term product roadmap. It is intended for engineers, contributors, technical reviewers, and open-source maintainers.
 
@@ -25,7 +25,7 @@ This document is the authoritative internal engineering reference for the Krishi
 
 ### 1.1 Motivation
 
-The agricultural sector employs over 42% of India's workforce yet accounts for only 17% of GDP — a disparity driven not by the impossibility of scale but by the information asymmetry between farmers and the markets, sciences, and technologies that could benefit them. Access to expert agricultural guidance, crop disease diagnostics, and strategic business planning has historically required either expensive consultants or proximity to government extension services — both scarce resources for the rural smallholder.
+The agricultural sector employs over 42% of India's workforce yet accounts for only 17% of GDP, a disparity driven not by the impossibility of scale but by the information asymmetry between farmers and the markets, sciences, and technologies that could benefit them. Access to expert agricultural guidance, crop disease diagnostics, and strategic business planning has historically required either expensive consultants or proximity to government extension services, both scarce resources for the rural smallholder.
 
 KrishiSahAI Advisory was conceived to eliminate that asymmetry by delivering expert-level intelligence directly to any farmer with a smartphone, in the farmer's own language, at zero marginal cost per query.
 
@@ -37,13 +37,13 @@ KrishiSahAI Advisory was conceived to eliminate that asymmetry by delivering exp
 
 **Farmer-first UX.** Every design decision is evaluated against the question: does this serve a farmer with intermittent connectivity, limited screen time, and no technical background? This drives the preference for voice interaction, visual diagnostics, and concise streaming responses.
 
-**Modularity over monolithism.** Each backend service — Business Advisor, Disease Detector, Pest Detector, Waste-to-Value, Farm Health, Voice, Weather, News — is an independently deployable Python module. The Flask application layer is an orchestration surface, not a logic repository.
+**Modularity over monolithism.** Each backend service, Business Advisor, Disease Detector, Pest Detector, Waste-to-Value, Farm Health, Voice, Weather, News, is an independently deployable Python module. The Flask application layer is an orchestration surface, not a logic repository.
 
 **Integrity over convenience.** The system enforces deterministic safety rules in the notification engine that override LLM outputs when critical thresholds are crossed. AI is used to augment advice, not to replace non-negotiable safety decisions.
 
 ### 1.3 Long-Term Direction
 
-The platform is designed to evolve from a farmer-facing advisory tool into a full agricultural intelligence operating system — capable of integrating IoT soil sensors, connecting to national Mandi price APIs, driving drone-based interventions, and serving as a foundation for government agricultural extension programs.
+The platform is designed to evolve from a farmer-facing advisory tool into a full agricultural intelligence operating system, capable of integrating IoT soil sensors, connecting to national Mandi price APIs, driving drone-based interventions, and serving as a foundation for government agricultural extension programs.
 
 ---
 
@@ -61,17 +61,17 @@ Frontend/
     contexts/         # ThemeContext, FarmContext, LanguageContext
     hooks/            # useLanguage, useTheme, useFarm
     pages/            # Route-level page components
-    services/         # api.ts — centralized HTTP + SSE client
+    services/         # api.ts, centralized HTTP + SSE client
   components/         # Feature-level components (ChatSidebar, etc.)
   firebase.ts         # Firebase SDK initialization
   App.tsx             # Root router, auth state, global layout
 ```
 
-**State Management:** Context API is used for global state (theme, language, active farm). Local component state manages form inputs, loading flags, and transient UI data. No external state library (Redux/Zustand) is used — the current scale does not warrant the overhead.
+**State Management:** Context API is used for global state (theme, language, active farm). Local component state manages form inputs, loading flags, and transient UI data. No external state library (Redux/Zustand) is used, the current scale does not warrant the overhead.
 
 **Routing:** React Router v6 with route-level lazy loading. Authentication guards redirect unauthenticated users to the login page before reaching any feature route.
 
-**API Client (`api.ts`):** All backend communication is routed through a single centralized module. It exposes `get`, `post`, `postMultipart`, `stream`, and feature-specific methods. Every call retrieves a fresh Firebase ID token from `auth.currentUser.getIdToken(true)` and attaches it as a Bearer token header. The `stream` method implements a custom SSE reader using the Fetch API's `ReadableStream` interface, decoding chunked Server-Sent Event payloads and invoking an `onChunk` callback for each received token — producing a real-time "typing" effect for LLM responses.
+**API Client (`api.ts`):** All backend communication is routed through a single centralized module. It exposes `get`, `post`, `postMultipart`, `stream`, and feature-specific methods. Every call retrieves a fresh Firebase ID token from `auth.currentUser.getIdToken(true)` and attaches it as a Bearer token header. The `stream` method implements a custom SSE reader using the Fetch API's `ReadableStream` interface, decoding chunked Server-Sent Event payloads and invoking an `onChunk` callback for each received token, producing a real-time "typing" effect for LLM responses.
 
 **Internationalization:** A `useLanguage` hook backed by a locale file system provides translated strings for every UI label. Locale keys are structured by feature and component. All feature pages and shared components use this hook; hardcoded English strings are not permitted in the component tree.
 
@@ -81,7 +81,7 @@ Frontend/
 
 **Runtime:** Python 3.10+, Flask 3.x.
 
-**Entry Point:** `Backend/app.py` — initializes Firebase Admin SDK, configures CORS and APScheduler, registers all API route handlers, and defines lazy-loading wrappers for ML models.
+**Entry Point:** `Backend/app.py`, initializes Firebase Admin SDK, configures CORS and APScheduler, registers all API route handlers, and defines lazy-loading wrappers for ML models.
 
 **Service Module Pattern:**
 ```
@@ -208,7 +208,7 @@ POST /api/business-advisor/chat/stream
 - Ollama unavailable: `generate_recommendations()` falls back to `_get_fallback_recommendations()` which returns a hardcoded high-value business list.
 - Missing profile fields: All `FarmerProfile` fields have sensible defaults; the `safe_float()` utility handles malformed numeric inputs.
 
-**Security:** Every endpoint decorated with `@require_auth`. Session IDs are UUIDs — not sequentially guessable. Sessions in the in-memory dictionary are isolated per user by UUID.
+**Security:** Every endpoint decorated with `@require_auth`. Session IDs are UUIDs, not sequentially guessable. Sessions in the in-memory dictionary are isolated per user by UUID.
 
 **Performance:** Ollama runs locally, eliminating network latency for LLM inference. SSE streaming begins returning tokens within milliseconds of the model starting generation, providing perceived responsiveness even on slow connections.
 
@@ -286,9 +286,9 @@ POST /api/business-advisor/chat/stream
 
 **Objective:** Maintain a persistent, language-consistent, streaming conversational session within the context of a selected agri-business.
 
-This is documented as part of the Business Advisory Engine (Section 3.1). The chat interface — including standard JSON response (`/api/business-advisor/chat`) and SSE streaming (`/api/business-advisor/chat/stream`) — is fully described there.
+This is documented as part of the Business Advisory Engine (Section 3.1). The chat interface, including standard JSON response (`/api/business-advisor/chat`) and SSE streaming (`/api/business-advisor/chat/stream`), is fully described there.
 
-Additional capability: `POST /api/chat/generate-title` — invokes the advisor's `generate_title()` method to produce a descriptive session name based on the conversation history. This is used by the frontend `ChatSidebar` to display meaningful session labels in the conversation history list.
+Additional capability: `POST /api/chat/generate-title`, invokes the advisor's `generate_title()` method to produce a descriptive session name based on the conversation history. This is used by the frontend `ChatSidebar` to display meaningful session labels in the conversation history list.
 
 ---
 
@@ -335,7 +335,7 @@ Additional capability: `POST /api/chat/generate-title` — invokes the advisor's
 
 **Objective:** Generate a phased multi-year strategic roadmap for a selected agri-business.
 
-**Backend Logic (`roadmap_service.py` — `SustainabilityRoadmapGenerator`):**
+**Backend Logic (`roadmap_service.py`, `SustainabilityRoadmapGenerator`):**
 
 - Accepts `business_name`, `user_id`, and `language`.
 - Uses Ollama/Gemini to generate a 4-phase roadmap with each phase containing a title, timeline, goals, required actions, investment estimate, and expected outcome.
@@ -350,7 +350,7 @@ Additional capability: `POST /api/chat/generate-title` — invokes the advisor's
 
 **Objective:** Generate a crop-specific phased cultivation plan.
 
-**Backend Logic (`planner_service.py` — `CropPlannerGenerator`):**
+**Backend Logic (`planner_service.py`, `CropPlannerGenerator`):**
 
 - Accepts `crop_name`, `user_id`, and `language`.
 - Checks Firestore for an existing plan (`users/{uid}/crop_plans/{crop}_{lang}`) before generating a new one.
@@ -382,13 +382,13 @@ Additional capability: `POST /api/chat/generate-title` — invokes the advisor's
 
 **Weather Service (`weather_service.py`):**
 - HTTP client: `httpx` with timeout control.
-- API: `weatherapi.com` — authenticated via `WEATHER_API_KEY`.
+- API: `weatherapi.com`, authenticated via `WEATHER_API_KEY`.
 - Endpoint used: `forecast.json` with location and days parameters.
 - Response flattening: extracts `max_temp_c`, `min_temp_c`, `avg_humidity`, `daily_chance_of_rain`, `condition.text` into a clean dictionary.
 - Farm location is used as the primary location parameter, overriding any device-detected location.
 
 **News Service (`news_service.py`):**
-- API: GNews — authenticated via `GNEWS_API_KEY`.
+- API: GNews, authenticated via `GNEWS_API_KEY`.
 - Query construction: `(crop1 OR crop2) AND (district) AND (agriculture OR farming OR price OR mandi OR scheme)`.
 - Tiered fallback: If the compound query returns fewer than 3 results, the service retries with a simpler crop-only query, then a category-only query.
 - Results are filtered for recency and deduplicated by URL before returning.
@@ -397,14 +397,14 @@ Additional capability: `POST /api/chat/generate-title` — invokes the advisor's
 
 ### 3.11 Voice Interaction System
 
-**Speech-to-Text (`voice_service.py` — Whisper):**
+**Speech-to-Text (`voice_service.py`, Whisper):**
 - Audio blob received at `POST /api/voice/stt` as multipart file.
 - Saved as a temporary `.wav` file in `uploads/audio/`.
 - `whisper.load_model("base").transcribe(path)` returns the transcript.
 - Temporary file deleted immediately after transcription.
 - Transcript returned as JSON.
 
-**Text-to-Speech (`voice_service.py` — gTTS):**
+**Text-to-Speech (`voice_service.py`, gTTS):**
 - Text and language code received at `POST /api/voice/tts`.
 - `gTTS(text=text, lang=lang_code)` generates an MP3 audio stream.
 - Audio is returned as a binary stream with `Content-Type: audio/mpeg`.
@@ -445,7 +445,7 @@ Additional capability: `POST /api/chat/generate-title` — invokes the advisor's
 **Route:** `POST /api/disease/detect`  
 **Auth:** Required  
 **Content-Type:** `multipart/form-data`  
-**Request Field:** `image` (file — PNG, JPG, JPEG, GIF, BMP; max 16MB)
+**Request Field:** `image` (file, PNG, JPG, JPEG, GIF, BMP; max 16MB)
 
 **Success Response (200):**
 ```json
@@ -463,9 +463,9 @@ Additional capability: `POST /api/chat/generate-title` — invokes the advisor's
 ```
 
 **Error Responses:**
-- `400` — No image provided / invalid file type
-- `401` — Unauthorized
-- `500` — Internal inference error
+- `400`, No image provided / invalid file type
+- `401`, Unauthorized
+- `500`, Internal inference error
 
 ---
 
@@ -493,7 +493,7 @@ Additional capability: `POST /api/chat/generate-title` — invokes the advisor's
 
 ---
 
-### 4.4 Business Advisor — Initialize Session
+### 4.4 Business Advisor: Initialize Session
 
 **Route:** `POST /api/business-advisor/init`  
 **Auth:** Required  
@@ -523,7 +523,7 @@ Additional capability: `POST /api/chat/generate-title` — invokes the advisor's
   "success": true,
   "session_id": "a3f8d2c1-...",
   "recommendations": [
-    { "name": "Floriculture — Gerbera", "roi_estimate": "High", "timeline": "8 months" },
+    { "name": "Floriculture, Gerbera", "roi_estimate": "High", "timeline": "8 months" },
     { "name": "Dairy Farming", "roi_estimate": "Medium", "timeline": "12 months" }
   ],
   "message": "Business advisor initialized successfully"
@@ -532,7 +532,7 @@ Additional capability: `POST /api/chat/generate-title` — invokes the advisor's
 
 ---
 
-### 4.5 Business Advisor — Streaming Chat
+### 4.5 Business Advisor: Streaming Chat
 
 **Route:** `POST /api/business-advisor/chat/stream`  
 **Auth:** Required  
@@ -558,7 +558,7 @@ data: [DONE]\n\n
 
 ---
 
-### 4.6 Business Advisor — Generate Chat Title
+### 4.6 Business Advisor: Generate Chat Title
 
 **Route:** `POST /api/chat/generate-title`  
 **Auth:** Required
@@ -591,7 +591,7 @@ data: [DONE]\n\n
 
 ---
 
-### 4.8 Waste-to-Value — Analyze
+### 4.8 Waste-to-Value: Analyze
 
 **Route:** `POST /api/waste-to-value/analyze`  
 **Auth:** Required
@@ -608,14 +608,14 @@ data: [DONE]\n\n
       { "name": "Vermicomposting", "description": "...", "complexity": "low" }
     ],
     "value_recovery_percentage": 68,
-    "conclusion": { "title": "Rice Straw — High Value Potential", "summary": "..." }
+    "conclusion": { "title": "Rice Straw, High Value Potential", "summary": "..." }
   }
 }
 ```
 
 ---
 
-### 4.9 Waste-to-Value — Streaming Chat
+### 4.9 Waste-to-Value: Streaming Chat
 
 **Route:** `POST /api/waste-to-value/chat/stream`  
 **Auth:** Required
@@ -626,7 +626,7 @@ data: [DONE]\n\n
 
 ---
 
-### 4.10 Farm Health — Analyze
+### 4.10 Farm Health: Analyze
 
 **Route:** `POST /api/farm-health/analyze`  
 **Auth:** Required
@@ -702,7 +702,7 @@ data: [DONE]\n\n
 
 ---
 
-### 4.14 Voice — Speech to Text
+### 4.14 Voice: Speech to Text
 
 **Route:** `POST /api/voice/stt`  
 **Auth:** Required  
@@ -713,7 +713,7 @@ data: [DONE]\n\n
 
 ---
 
-### 4.15 Voice — Text to Speech
+### 4.15 Voice: Text to Speech
 
 **Route:** `POST /api/voice/tts`  
 **Auth:** Required
@@ -807,7 +807,7 @@ data: [DONE]\n\n
 ### 5.4 Optimization Notes
 
 - **No relational joins required.** All data for a user is co-located under `users/{uid}`, minimizing read operations.
-- **Denormalized reads.** Profile data is read once per session and passed as context to LLM calls — no repeated Firestore reads during a session.
+- **Denormalized reads.** Profile data is read once per session and passed as context to LLM calls, no repeated Firestore reads during a session.
 - **Caching at the subcollection level.** Crop plans are cached in Firestore, converting a ~5-second LLM inference call into a ~100ms Firestore document read on repeat access.
 
 ---
@@ -825,7 +825,7 @@ data: [DONE]\n\n
 | **Input Shape** | 224 × 224 × 3 (RGB) |
 | **Output** | Softmax probability vector (38 dimensions) |
 | **Model File** | `plant_disease_model.h5` |
-| **Loading** | Lazy — first inference request |
+| **Loading** | Lazy, first inference request |
 
 **Preprocessing Pipeline:**
 1. Load image from disk using PIL.
@@ -838,7 +838,7 @@ data: [DONE]\n\n
 
 **Limitations:**
 - Performance degrades on images with poor lighting, motion blur, or significant background noise.
-- Classes are limited to the PlantVillage training set — diseases not in the training distribution will be misclassified.
+- Classes are limited to the PlantVillage training set, diseases not in the training distribution will be misclassified.
 - Does not account for mixed infections (multiple diseases simultaneously).
 
 ---
@@ -852,7 +852,7 @@ data: [DONE]\n\n
 | **Dataset** | Custom agricultural pest dataset |
 | **Task** | Object detection |
 | **Class File** | `classes.txt` |
-| **Loading** | Lazy — first inference request |
+| **Loading** | Lazy, first inference request |
 
 **Inference Pipeline:**
 1. Image received and saved to `uploads/`.
@@ -931,7 +931,7 @@ data: [DONE]\n\n
 - All secrets (API keys, Firebase credentials) are stored in `.env` files excluded from version control via `.gitignore`.
 - `python-dotenv` loads environment variables at process startup.
 - Firebase credentials path is configurable via `FIREBASE_CREDENTIALS_PATH`; the service account JSON file is never committed.
-- Frontend secrets are prefixed with `VITE_` and embedded at build time — only public Firebase config values (project ID, app ID) are placed here.
+- Frontend secrets are prefixed with `VITE_` and embedded at build time, only public Firebase config values (project ID, app ID) are placed here.
 
 ### 7.5 Rate Limiting
 
@@ -953,7 +953,7 @@ data: [DONE]\n\n
 
 ### 8.1 Frontend
 
-**API Caching:** React Query or SWR can be introduced for GET endpoint caching (notifications, weather) to avoid repeated fetches on re-render. Currently not implemented — a planned enhancement.
+**API Caching:** React Query or SWR can be introduced for GET endpoint caching (notifications, weather) to avoid repeated fetches on re-render. Currently not implemented, a planned enhancement.
 
 **Lazy Routing:** React Router v6 route-level lazy loading with `React.lazy()` and `Suspense` ensures only the active page's JavaScript bundle is loaded.
 
@@ -1025,14 +1025,14 @@ A GitHub Actions workflow (`Build Android APK (TWA)`) is defined for automated A
 ### 10.3 Logging Strategy
 
 All backend log lines are prefixed with a service tag in square brackets:
-- `[SCAN]` — Disease Detector
-- `[PEST]` — Pest Detector
-- `[ADVISOR]` — Business Advisor
-- `[WASTE]` — Waste-to-Value
-- `[FARM_HEALTH]` — Farm Health
-- `[ROADMAP]` — Roadmap Generator
-- `[CROP-ROADMAP]` — Crop Planner
-- `[SCHEDULER]` — Notification Scheduler
+- `[SCAN]`, Disease Detector
+- `[PEST]`, Pest Detector
+- `[ADVISOR]`, Business Advisor
+- `[WASTE]`, Waste-to-Value
+- `[FARM_HEALTH]`, Farm Health
+- `[ROADMAP]`, Roadmap Generator
+- `[CROP-ROADMAP]`, Crop Planner
+- `[SCHEDULER]`, Notification Scheduler
 
 This enables rapid log filtering in production environments using `grep` or log aggregation queries.
 
@@ -1086,28 +1086,28 @@ python app.py        # Development server (Flask debug mode disabled in prod)
 
 ## 12. Future Roadmap
 
-### Phase 1 — Data Enrichment (Q2 2026)
+### Phase 1: Data Enrichment (Q2 2026)
 
 - Integration with the Agmarknet national Mandi price API for real-time commodity pricing.
 - Integration with PM-KISAN beneficiary data API for scheme eligibility alerts.
 - Expanded disease model training on Indian-specific crop varieties (Turmeric, Sugarcane, Mango).
 - Green Credit System integration: track and display carbon credit eligibility based on organic practice recommendations.
 
-### Phase 2 — Intelligence Enhancement (Q3 2026)
+### Phase 2: Intelligence Enhancement (Q3 2026)
 
 - Migration from Ollama `llama3.2` to a fine-tuned agriculture-specific model trained on Indian agricultural extension literature.
-- Soil sensor IoT integration via MQTT — direct real-time soil pH, moisture, and NPK readings fed into the Farm Health Engine.
+- Soil sensor IoT integration via MQTT, direct real-time soil pH, moisture, and NPK readings fed into the Farm Health Engine.
 - Pest detection expansion to 50+ classes using a custom-labeled Indian agricultural pest dataset.
 - Satellite imagery integration (ISRO Bhuvan API) for remote crop health monitoring.
 
-### Phase 3 — Enterprise and Government Adaptation (Q4 2026)
+### Phase 3: Enterprise and Government Adaptation (Q4 2026)
 
 - Multi-farm management dashboard for agricultural extension officers managing portfolios of 100+ farmers.
 - Admin analytics console: aggregate anonymized data on disease prevalence by district and season.
 - Government scheme recommendation engine: match farmer profile against all active central and state agricultural schemes.
 - Offline-first mobile application with synchronized local data store for use in areas with intermittent connectivity.
 
-### Phase 4 — Monetization and Scale (2027)
+### Phase 4: Monetization and Scale (2027)
 
 - Freemium model: free access to disease detection and basic advisory; premium subscription for unlimited LLM sessions, PDF reports, and advanced analytics.
 - Agri-input marketplace integration: connect treatment recommendations to verified supplier catalogs.
@@ -1116,4 +1116,4 @@ python app.py        # Development server (Flask debug mode disabled in prod)
 
 ---
 
-*End of DETAIL.md — KrishiSahAI Advisory Technical Documentation*
+*End of DETAIL.md, KrishiSahAI Advisory Technical Documentation*
